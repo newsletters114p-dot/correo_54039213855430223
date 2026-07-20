@@ -39,10 +39,10 @@ DB_PATH      = "./data/graficos.db"
 CSV_PATH     = "./tickers_maestro.csv"
 
 # Umbrales de estado basados en rating
-RATING_INFRAVAL       = 0.30
-RATING_CERCA_INFRAVAL = 0.40
-RATING_CERCA_SOBREVAL = 0.70
-RATING_SOBREVAL       = 0.80
+RATING_INFRAVAL       = 0.05
+RATING_CERCA_INFRAVAL = 0.15
+RATING_CERCA_SOBREVAL = 0.85
+RATING_SOBREVAL       = 0.95
 
 # Orden fijo de sectores
 ORDEN_SECTORES = [

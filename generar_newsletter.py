@@ -33,7 +33,7 @@ import yfinance as yf
 # ══════════════════════════════════════════════════════════════════════════════
 #  Configuración
 # ══════════════════════════════════════════════════════════════════════════════
-GH_PAGES_URL = "https://newsletters114p-dot.github.io/wefdjwjdweifnewlkkk"
+GH_PAGES_URL = "https://newsletters114p-dot.github.io/correo_54039213855430223/"
 ASUNTO       = "📊 Dividendo Creciente — Seguimiento semanal"
 DB_PATH      = "./data/graficos.db"
 CSV_PATH     = "./tickers_maestro.csv"

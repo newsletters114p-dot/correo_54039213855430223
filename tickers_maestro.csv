@@ -1,0 +1,349 @@
+ticker,nombre,sector,indice,tipo
+WLY US,John Wiley & Sons Inc,Communication Services,Aristocrats,Banquillo
+SCMN SE,Swisscom AG,Communication Services,Aristocrats,No info
+NTTYY US,Nippon Telegraph & Telephone C,Communication Services,Aristocrats,No info
+TU US,TELUS Corp,Communication Services,Aristocrats,No info
+T CN,TELUS Corp,Communication Services,Aristocrats,No info
+9984 JP,SoftBank Group Corp,Communication Services,Aristocrats,No info
+VZ US,Verizon Communications Inc,Communication Services,Achievers,Titular
+RCI/B CN,Rogers Communications Inc,Communication Services,Achievers,No info
+RCI US,Rogers Communications Inc,Communication Services,Achievers,No info
+CMCSA US,Comcast Corp,Communication Services,Achievers,Banquillo
+CAR AU,CAR Group Ltd,Communication Services,Aristocrats,No info
+TEL NO,Telenor ASA,Communication Services,Aristocrats,No info
+QBR/B CN,Quebecor Inc,Communication Services,Achievers,No info
+BOL FP,Bollore SE,Communication Services,Achievers,No info
+NXST US,Nexstar Media Group Inc,Communication Services,Achievers,Banquillo
+ELISA FH,Elisa Oyj,Communication Services,Aristocrats,No info
+TKA AV,Telekom Austria AG,Communication Services,Aristocrats,No info
+700 HK,Tencent Holdings Ltd,Communication Services,Aristocrats,No info
+SIRI US,Sirius XM Holdings Inc,Communication Services,-,No info
+KDDIY US,KDDI Corp,Communication Services,Achievers,No info
+KPN NA,Koninklijke KPN NV,Communication Services,-,No info
+NYT US,New York Times Co/The,Communication Services,-,No info
+TCEHY US,Tencent Holdings Ltd,Communication Services,Achievers,No info
+TMUS US,T-Mobile US Inc,Communication Services,-,No info
+META US,Meta Platforms Inc,Communication Services,-,No info
+GOOGL US,Alphabet Inc,Communication Services,-,No info
+GPC US,Genuine Parts Co,Consumer Discretionary,Dividend King,Banquillo
+LOW US,Lowe's Cos Inc,Consumer Discretionary,Dividend King,Titular
+MCD US,McDonald's Corp,Consumer Discretionary,Aristocrats,Banquillo
+HESAY US,Hermes International SCA,Consumer Discretionary,Aristocrats,No info
+NKE US,NIKE Inc,Consumer Discretionary,Achievers,No info
+BBY US,Best Buy Co Inc,Consumer Discretionary,Achievers,No info
+WSM US,Williams-Sonoma Inc,Consumer Discretionary,Achievers,No info
+HD US,Home Depot Inc/The,Consumer Discretionary,Achievers,Titular
+TSCO US,Tractor Supply Co,Consumer Discretionary,Achievers,No info
+SBUX US,Starbucks Corp,Consumer Discretionary,Achievers,Banquillo
+POOL US,Pool Corp,Consumer Discretionary,Achievers,No info
+DPZ US,Domino's Pizza Inc,Consumer Discretionary,Achievers,No info
+DOL CN,Dollarama Inc,Consumer Discretionary,Aristocrats,No info
+TM US,Toyota Motor Corp,Consumer Discretionary,Achievers,No info
+DKS US,Dick's Sporting Goods Inc,Consumer Discretionary,Achievers,No info
+PAH3 GR,Porsche Automobil Holding SE,Consumer Discretionary,Achievers,No info
+QSR CN,Restaurant Brands Internationa,Consumer Discretionary,Achievers,No info
+VOW GR,Volkswagen AG,Consumer Discretionary,Achievers,No info
+YUM US,Yum! Brands Inc,Consumer Discretionary,-,No info
+WING US,Wingstop Inc,Consumer Discretionary,-,No info
+GRMN US,Garmin Ltd,Consumer Discretionary,-,No info
+EBAY US,eBay Inc,Consumer Discretionary,-,No info
+LVMUY US,LVMH Moet Hennessy Louis Vuitt,Consumer Discretionary,-,No info
+GM US,General Motors Co,Consumer Discretionary,-,No info
+P911 GR,Porsche AG,Consumer Discretionary,-,No info
+BKNG US,Booking Holdings Inc,Consumer Discretionary,-,No info
+LEN US,Lennar Corp,Consumer Discretionary,-,No info
+ITX SM,Industria de Diseno Textil SA,Consumer Discretionary,-,No info
+PG US,Procter & Gamble Co/The,Consumer Staples,Dividend King,Banquillo
+KVUE US,Kenvue Inc,Consumer Staples,Dividend King,No info
+MZTI US,Marzetti Company/The,Consumer Staples,Dividend King,No info
+KO US,Coca-Cola Co/The,Consumer Staples,Dividend King,No info
+CL US,Colgate-Palmolive Co,Consumer Staples,Dividend King,No info
+HRL US,Hormel Foods Corp,Consumer Staples,Dividend King,No info
+TGT US,Target Corp,Consumer Staples,Dividend King,Banquillo
+MO US,Altria Group Inc,Consumer Staples,Dividend King,Titular
+UVV US,Universal Corp/VA,Consumer Staples,Dividend King,No info
+SYY US,Sysco Corp,Consumer Staples,Dividend King,No info
+PEP US,PepsiCo Inc,Consumer Staples,Dividend King,Titular
+KMB US,Kimberly-Clark Corp,Consumer Staples,Dividend King,No info
+WMT US,Walmart Inc,Consumer Staples,Dividend King,No info
+ADM US,Archer-Daniels-Midland Co,Consumer Staples,Dividend King,No info
+CLX US,Clorox Co/The,Consumer Staples,Aristocrats,No info
+OR FP,L'Oreal SA,Consumer Staples,Aristocrats,No info
+DEO US,Diageo PLC,Consumer Staples,Aristocrats,No info
+UL US,Unilever PLC,Consumer Staples,Aristocrats,No info
+NSRGY US,Nestle SA,Consumer Staples,Aristocrats,No info
+BTI US,British American Tobacco PLC,Consumer Staples,Aristocrats,No info
+CASY US,Casey's General Stores Inc,Consumer Staples,Aristocrats,No info
+COST US,Costco Wholesale Corp,Consumer Staples,Achievers,No info
+KR US,Kroger Co/The,Consumer Staples,Achievers,No info
+HSY US,Hershey Co/The,Consumer Staples,Achievers,Banquillo
+ADRNY US,Koninklijke Ahold Delhaize NV,Consumer Staples,Aristocrats,Titular
+PM US,Philip Morris International In,Consumer Staples,Achievers,No info
+WDFC US,WD-40 Co,Consumer Staples,Achievers,No info
+TSN US,Tyson Foods Inc,Consumer Staples,Achievers,No info
+MDLZ US,Mondelez International,Consumer Staples,Achievers,No info
+STZ US,Constellation Brands Inc,Consumer Staples,Achievers,No info
+DG US,Dollar General Corp,Consumer Staples,-,No info
+LW US,Lamb Weston Holdings Inc,Consumer Staples,-,No info
+GIS US,General Mills Inc,Consumer Staples,-,No info
+MICC US,Magnum Ice Cream Co NV/The,Consumer Staples,Candidate,No info
+XOM US,Exxon Mobil Corp,Energy,Aristocrats,Banquillo
+CVX US,Chevron Corp,Energy,Aristocrats,Banquillo
+IMO US,Imperial Oil Ltd,Energy,Aristocrats,No info
+ENB CN,Enbridge Inc,Energy,Aristocrats,Titular
+RELIANCE IN,Reliance Industries Ltd,Energy,Aristocrats,No info
+CNQ CN,Canadian Natural Resources Ltd,Energy,Aristocrats,Titular
+TTE US,TotalEnergies SE,Energy,Aristocrats,Banquillo
+TRP US,TC Energy Corp,Energy,Aristocrats,No info
+PSX US,Phillips 66,Energy,Achievers,No info
+COP US,ConocoPhillips,Energy,-,No info
+DVN US,Devon Energy Corp,Energy,-,No info
+KMI US,Kinder Morgan Inc,Energy,-,No info
+GEI CN,Gibson Energy Inc,Energy,-,No info
+TPL US,Texas Pacific Land Corp,Energy,-,No info
+CINF US,Cincinnati Financial Corp,Financials,Dividend King,No info
+SPGI US,S&P Global Inc,Financials,Dividend King,No info
+BNS US,Bank of Nova Scotia/The,Financials,Aristocrats,Cantera
+BMO US,Bank of Montreal,Financials,Aristocrats,No info
+BEN US,Franklin Resources Inc,Financials,Aristocrats,No info
+AFL US,Aflac Inc,Financials,Aristocrats,No info
+TROW US,T Rowe Price Group Inc,Financials,Aristocrats,Cantera
+THFF US,First Financial Corp,Financials,Aristocrats,No info
+CB US,Chubb Ltd,Financials,Aristocrats,No info
+BRO US,Brown & Brown Inc,Financials,Aristocrats,No info
+OZK US,Bank OZK,Financials,Aristocrats,No info
+FDS US,FactSet Research Systems Inc,Financials,Aristocrats,No info
+AFG US,American Financial Group Inc/O,Financials,Achievers,No info
+AMP US,Ameriprise Financial Inc,Financials,Achievers,No info
+EVR US,Evercore Inc,Financials,Achievers,No info
+BLK US,BlackRock Inc,Financials,Achievers,Titular
+PRU US,Prudential Financial Inc,Financials,Achievers,Titular
+UNM US,Unum Group,Financials,Achievers,No info
+V US,Visa Inc,Financials,Achievers,Banquillo
+MCO US,Moody's Corp,Financials,Achievers,No info
+MRSH US,Marsh & McLennan Cos Inc,Financials,Achievers,No info
+FMAO US,Farmers & Merchants Bancorp In,Financials,Achievers,No info
+JPM US,JPMorgan Chase & Co,Financials,Achievers,Banquillo
+ALL US,Allstate Corp/The,Financials,Achievers,No info
+BNY US,Bank of New York Mellon Corp/T,Financials,Achievers,No info
+MAIN US,Main Street Capital Corp,Financials,Achievers,No info
+CME US,CME Group Inc,Financials,Achievers,No info
+USB US,US Bancorp,Financials,Achievers,No info
+MA US,Mastercard Inc,Financials,Achievers,No info
+TD US,Toronto-Dominion Bank/The,Financials,Aristocrats,No info
+RY US,Royal Bank of Canada,Financials,Aristocrats,No info
+KEY US,KeyCorp,Financials,Achievers,No info
+GS US,Goldman Sachs Group Inc/The,Financials,Achievers,No info
+AGO US,Assured Guaranty Ltd,Financials,Achievers,No info
+AON US,Aon PLC,Financials,Achievers,No info
+MET US,MetLife Inc,Financials,Achievers,No info
+NDAQ US,Nasdaq Inc,Financials,Achievers,No info
+ICE US,Intercontinental Exchange Inc,Financials,Achievers,No info
+BAER SW,Julius Baer Group Ltd,Financials,Aristocrats,No info
+MS US,Morgan Stanley,Financials,Achievers,No info
+BAC US,Bank of America Corp,Financials,Achievers,Banquillo
+MORN US,Morningstar Inc,Financials,Achievers,No info
+MSCI US,MSCI Inc,Financials,Achievers,No info
+MTB US,M&T Bank Corp,Financials,-,No info
+PFG US,Principal Financial Group Inc,Financials,-,No info
+WTW US,Willis Towers Watson PLC,Financials,-,No info
+ARES US,Ares Management Corp,Financials,-,No info
+KKR US,KKR & Co Inc,Financials,-,No info
+SCHW US,Charles Schwab Corp/The,Financials,-,No info
+AXP US,American Express Co,Financials,-,No info
+APO US,Apollo Global Management Inc,Financials,-,No info
+BAM US,Brookfield Asset Management Lt,Financials,-,No info
+IBKR US,Interactive Brokers Group Inc,Financials,Achievers,No info
+BN US,Brookfield Corp,Financials,-,No info
+C US,Citigroup Inc,Financials,-,No info
+ARCC US,Ares Capital Corp,Financials,-,No info
+BRK/B US,Berkshire Hathaway Inc,Financials,-,Titular
+BX US,Blackstone Inc,Financials,-,No info
+CG US,Carlyle Group Inc/The,Financials,-,No info
+JNJ US,Johnson & Johnson,Health Care,Dividend King,Banquillo
+ABT US,Abbott Laboratories,Health Care,Dividend King,Titular
+BDX US,Becton Dickinson & Co,Health Care,Dividend King,No info
+ABBV US,AbbVie Inc,Health Care,Achievers,Banquillo
+MDT US,Medtronic PLC,Health Care,Aristocrats,Banquillo
+RHHBY US,Roche Holding AG,Health Care,Aristocrats,No info
+SYK US,Stryker Corp,Health Care,Aristocrats,No info
+SAN FP,Sanofi SA,Health Care,Aristocrats,No info
+NVS US,Novartis AG,Health Care,Aristocrats,No info
+NVO US,Novo Nordisk A/S,Health Care,Aristocrats,No info
+NHC US,National HealthCare Corp,Health Care,Achievers,No info
+BMY US,Bristol-Myers Squibb Co,Health Care,Achievers,Titular
+UNH US,UnitedHealth Group Inc,Health Care,Achievers,Banquillo
+MRK US,Merck & Co Inc,Health Care,Achievers,Titular
+MRK GR,Merck KGaA,Health Care,Aristocrats,No info
+AMGN US,Amgen Inc,Health Care,Achievers,Banquillo
+ELV US,Elevance Health Inc,Health Care,Achievers,No info
+PFE US,Pfizer Inc,Health Care,Achievers,No info
+HIK LN,Hikma Pharmaceuticals PLC,Health Care,Aristocrats,No info
+HUM US,Humana Inc,Health Care,Achievers,No info
+ZTS US,Zoetis Inc,Health Care,Achievers,No info
+AZN US,AstraZeneca PLC,Health Care,Achievers,No info
+LLY US,Eli Lilly & Co,Health Care,Achievers,No info
+DHR US,Danaher Corp,Health Care,Achievers,No info
+TMO US,Thermo Fisher Scientific Inc,Health Care,-,No info
+CI US,Cigna Group/The,Health Care,-,No info
+CVS US,CVS Health Corp,Health Care,-,No info
+GSK US,GSK PLC,Health Care,-,No info
+DOV US,Dover Corp,Industrials,Dividend King,No info
+EMR US,Emerson Electric Co,Industrials,Dividend King,No info
+NDSN US,Nordson Corp,Industrials,Dividend King,No info
+ITW US,Illinois Tool Works Inc,Industrials,Dividend King,No info
+ABM US,ABM Industries Inc,Industrials,Aristocrats,No info
+SWK US,Stanley Black & Decker Inc,Industrials,Dividend King,No info
+MSA US,MSA Safety Inc,Industrials,Aristocrats,No info
+TNC US,Tennant Co,Industrials,Dividend King,No info
+GRC US,Gorman-Rupp Co/The,Industrials,Aristocrats,No info
+GWW US,WW Grainger Inc,Industrials,Aristocrats,No info
+ADP US,Automatic Data Processing Inc,Industrials,Dividend King,Titular
+PNR US,Pentair PLC,Industrials,Aristocrats,No info
+CSL US,Carlisle Cos Inc,Industrials,Aristocrats,No info
+CTAS US,Cintas Corp,Industrials,Aristocrats,No info
+BRC US,Brady Corp,Industrials,Aristocrats,No info
+SPX LN,Spirax Group PLC,Industrials,Aristocrats,No info
+DCI US,Donaldson Co Inc,Industrials,Aristocrats,No info
+GD US,General Dynamics Corp,Industrials,Aristocrats,Banquillo
+FELE US,Franklin Electric Co Inc,Industrials,Aristocrats,No info
+MGRC US,McGrath RentCorp,Industrials,Aristocrats,No info
+BZLFY US,Bunzl PLC,Industrials,Aristocrats,Banquillo
+CAT US,Caterpillar Inc,Industrials,Aristocrats,No info
+RTX US,RTX Corp,Industrials,Aristocrats,No info
+TRI US,Thomson Reuters Corp,Industrials,Aristocrats,No info
+AOS US,A O Smith Corp,Industrials,Aristocrats,No info
+EXPD US,Expeditors International of Wa,Industrials,Aristocrats,No info
+LECO US,Lincoln Electric Holdings Inc,Industrials,Aristocrats,No info
+CNI US,Canadian National Railway Co,Industrials,Aristocrats,Titular
+CHRW US,CH Robinson Worldwide Inc,Industrials,Aristocrats,No info
+FAST US,Fastenal Co,Industrials,Aristocrats,No info
+LHX US,L3Harris Technologies Inc,Industrials,Aristocrats,No info
+CKN LN,Clarkson PLC,Industrials,Aristocrats,No info
+LMT US,Lockheed Martin Corp,Industrials,Achievers,Banquillo
+WM US,Waste Management Inc,Industrials,Achievers,No info
+ROL US,Rollins Inc,Industrials,Achievers,No info
+NOC US,Northrop Grumman Corp,Industrials,Achievers,No info
+JBHT US,JB Hunt Transport Services Inc,Industrials,Achievers,No info
+R US,Ryder System Inc,Industrials,Core,No info
+CSX US,CSX Corp,Industrials,Achievers,No info
+HEI US,HEICO Corp,Industrials,Achievers,No info
+RHI US,Robert Half Inc,Industrials,Achievers,No info
+DHLGY US,Deutsche Post AG,Industrials,Aristocrats,Titular
+LGRDY US,Legrand SA,Industrials,Aristocrats,No info
+HUBB US,Hubbell Inc,Industrials,Achievers,No info
+BR US,Broadridge Financial Solutions,Industrials,Achievers,No info
+UNP US,Union Pacific Corp,Industrials,Achievers,No info
+CMI US,Cummins Inc,Industrials,Achievers,No info
+UPS US,United Parcel Service Inc,Industrials,Achievers,No info
+SNA US,Snap-on Inc,Industrials,Achievers,Banquillo
+AIT US,Applied Industrial Technologie,Industrials,Achievers,No info
+LII US,Lennox International Inc,Industrials,Achievers,No info
+ETN US,Eaton Corp PLC,Industrials,Achievers,No info
+SU FP,Schneider Electric SE,Industrials,Aristocrats,No info
+PCAR US,PACCAR Inc,Industrials,Achievers,No info
+HON US,Honeywell International Inc,Industrials,Achievers,No info
+HII US,Huntington Ingalls Industries,Industrials,Achievers,No info
+SBGSY US,Schneider Electric SE,Industrials,Aristocrats,No info
+WTS US,Watts Water Technologies Inc,Industrials,Achievers,No info
+WSO US,Watsco Inc,Industrials,Achievers,No info
+ABBN SW,ABB Ltd,Industrials,Achievers,No info
+PH US,Parker-Hannifin Corp,Industrials,Achievers,No info
+LDO IM,Leonardo SpA,Industrials,Achievers,No info
+ODFL US,Old Dominion Freight Line Inc,Industrials,-,No info
+JCI US,Johnson Controls International,Industrials,-,No info
+SIEGY US,Siemens AG,Industrials,-,No info
+DE US,Deere & Co,Industrials,-,No info
+FDX US,FedEx Corp,Industrials,-,No info
+BWXT US,BWX Technologies Inc,Industrials,-,No info
+GE US,GE Aerospace,Industrials,-,No info
+MMM US,3M Co,Industrials,-,No info
+TEX US,Terex Corp,Industrials,Candidate,No info
+TWI US,Titan International Inc,Industrials,Tactical,No info
+BMI US,Badger Meter Inc,Information Technology,Aristocrats,No info
+ROP US,Roper Technologies Inc,Information Technology,Aristocrats,No info
+IBM US,International Business Machine,Information Technology,Aristocrats,No info
+SAP GR,SAP SE,Information Technology,Aristocrats,No info
+QCOM US,QUALCOMM Inc,Information Technology,Achievers,Banquillo
+ADI US,Analog Devices Inc,Information Technology,Achievers,No info
+MSFT US,Microsoft Corp,Information Technology,Achievers,Cantera
+TXN US,Texas Instruments Inc,Information Technology,Achievers,Titular
+ORCL US,Oracle Corp,Information Technology,Achievers,No info
+ASML US,ASML Holding NV,Information Technology,Aristocrats,No info
+HPQ US,HP Inc,Information Technology,Achievers,Titular
+AVGO US,Broadcom Inc,Information Technology,Achievers,Banquillo
+KLAC US,KLA Corp,Information Technology,Achievers,No info
+LFUS US,Littelfuse Inc,Information Technology,Achievers,No info
+CSCO US,Cisco Systems Inc,Information Technology,Achievers,Banquillo
+ACN US,Accenture PLC,Information Technology,Achievers,Banquillo
+INTU US,Intuit Inc,Information Technology,Achievers,No info
+MSI US,Motorola Solutions Inc,Information Technology,Achievers,No info
+GLW US,Corning Inc,Information Technology,Achievers,No info
+AAPL US,Apple Inc,Information Technology,Achievers,No info
+LRCX US,Lam Research Corp,Information Technology,Achievers,No info
+NTAP US,NetApp Inc,Information Technology,Achievers,No info
+TSM US,Taiwan Semiconductor Manufactu,Information Technology,Achievers,No info
+LOGI US,Logitech International SA,Information Technology,Achievers,No info
+AMAT US,Applied Materials Inc,Information Technology,-,No info
+OLED US,#NAME?,Information Technology,-,No info
+INFY US,Infosys Ltd,Information Technology,-,No info
+DELL US,Dell Technologies Inc,Information Technology,-,No info
+TOELY US,Tokyo Electron Ltd,Information Technology,-,No info
+CRM US,Salesforce Inc,Information Technology,-,No info
+CSU CN,Constellation Software Inc/Can,Information Technology,-,No info
+NVDA US,NVIDIA Corp,Information Technology,-,No info
+SHW US,Sherwin-Williams Co/The,Materials,Aristocrats,No info
+LIN US,Linde PLC,Materials,Aristocrats,Banquillo
+RGLD US,Royal Gold Inc,Materials,Aristocrats,Titular
+WLK US,Westlake Corp,Materials,Achievers,No info
+AIQUY US,Air Liquide SA,Materials,Aristocrats,No info
+FNV US,Franco-Nevada Corp,Materials,Aristocrats,Banquillo
+LYB US,LyondellBasell Industries NV,Materials,Achievers,No info
+STLD US,Steel Dynamics Inc,Materials,Achievers,No info
+RIO US,Rio Tinto PLC,Materials,-,No info
+WPM US,Wheaton Precious Metals Corp,Materials,-,No info
+NEM US,Newmont Corp,Materials,-,No info
+BASFY US,BASF SE,Materials,-,No info
+BHP US,BHP Group Ltd,Materials,-,Banquillo
+B US,Barrick Mining Corp,Materials,-,No info
+MT US,ArcelorMittal SA,Materials,Aristocrats,No info
+FRT US,Federal Realty Investment Trus,Real Estate,Dividend King,No info
+NNN US,NNN REIT Inc,Real Estate,Aristocrats,No info
+O US,Realty Income Corp,Real Estate,Aristocrats,Titular
+ESS US,Essex Property Trust Inc,Real Estate,Aristocrats,Titular
+WPC US,WP Carey Inc,Real Estate,Aristocrats,No info
+CUBE US,CubeSmart,Real Estate,Achievers,Banquillo
+MAA US,Mid-America Apartment Communit,Real Estate,Achievers,No info
+ARE US,Alexandria Real Estate Equitie,Real Estate,Achievers,No info
+PLD US,Prologis Inc,Real Estate,Achievers,Titular
+AMT US,American Tower Corp,Real Estate,Achievers,Banquillo
+ADC US,Agree Realty Corp,Real Estate,Aristocrats,No info
+STAG US,STAG Industrial Inc,Real Estate,Achievers,No info
+EQIX US,Equinix Inc,Real Estate,Achievers,Banquillo
+IIPR US,Innovative Industrial Properti,Real Estate,-,No info
+VICI US,VICI Properties Inc,Real Estate,-,No info
+SPG US,Simon Property Group Inc,Real Estate,-,No info
+MRG-U CN,Morguard North American Reside,Real Estate,-,No info
+AVB US,AvalonBay Communities Inc,Real Estate,-,No info
+DLR US,Digital Realty Trust Inc,Real Estate,-,No info
+CCI US,Crown Castle Inc,Real Estate,-,No info
+OHI US,Omega Healthcare Investors Inc,Real Estate,-,No info
+AWR US,American States Water Co,Utilities,Dividend King,Titular
+CWT US,California Water Service Group,Utilities,Dividend King,No info
+BKH US,Black Hills Corp,Utilities,Dividend King,Banquillo
+CU CN,Canadian Utilities Ltd,Utilities,Dividend King,No info
+NEE US,NextEra Energy Inc,Utilities,Aristocrats,Titular
+NJR US,New Jersey Resources Corp,Utilities,Aristocrats,No info
+ES US,Eversource Energy,Utilities,Aristocrats,No info
+HER IM,Hera SpA,Utilities,Aristocrats,No info
+EIX US,Edison International,Utilities,Achievers,No info
+WEC US,WEC Energy Group Inc,Utilities,Achievers,No info
+POR US,Portland General Electric Co,Utilities,Achievers,No info
+SWX US,Southwest Gas Holdings Inc,Utilities,Achievers,No info
+AWK US,American Water Works Co Inc,Utilities,Achievers,No info
+IBE SM,Iberdrola SA,Utilities,Aristocrats,No info
+VST US,Vistra Corp,Utilities,-,No info
+UGI US,UGI Corp,Utilities,-,Banquillo
+TEP LN,Telecom Plus PLC,Utilities,-,No info
+IMO CN,Imperial Oil Ltd,Energy,Aristocrats,Titular
+RIO LN,Rio Tinto GBP,Materials,Aristocrats,Titular

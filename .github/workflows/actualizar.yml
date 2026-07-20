@@ -1,0 +1,48 @@
+name: Actualizar GW diario
+
+on:
+  schedule:
+    # Cada día laborable a las 22:30 UTC (00:30 CET / cierre de mercados USA)
+    - cron: '30 22 * * 1-5'
+  workflow_dispatch:
+    # Permite lanzarlo manualmente desde GitHub Actions con un clic
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # Token con permisos de escritura para hacer commit del HTML
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install yfinance
+
+      - name: Restaurar DB desde cache
+        uses: actions/cache@v4
+        with:
+          path: data/graficos.db
+          key: graficos-db-${{ github.run_id }}
+          restore-keys: |
+            graficos-db-
+
+      - name: Ejecutar actualizar.py
+        run: python actualizar.py
+
+      - name: Commit y push del HTML actualizado
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html
+          # Solo hace commit si el HTML ha cambiado
+          git diff --staged --quiet || git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

@@ -101,59 +101,41 @@ def descargar_precios(ticker_modelo: str, fecha_desde: str) -> list:
         return []
 
 
-def detectar_frecuencia_pago(pagos_historicos: list) -> int:
+def detectar_frecuencia_pago(por_anio_hist: dict) -> int:
     """
-    Detecta la frecuencia anual de pago de dividendos usando años completos previos.
-
-    Estrategia robusta:
-      1. Agrupa los pagos por año para obtener el número de pagos por año.
-      2. Toma la mediana de los recuentos anuales como frecuencia base.
-      3. Redondea al valor estándar más cercano (1, 2, 4, 12).
-
-    Esto filtra automáticamente pagos especiales y variaciones puntuales
-    (ej: HPQ, MET, MSFT, PRU, UNH que tienen historial irregular).
-
-    Retorna: 1 (anual), 2 (semestral), 4 (trimestral), 12 (mensual).
+    Detecta la frecuencia anual de pago usando solo años con >= 3 pagos
+    (filtra transiciones históricas y huecos de Yahoo).
+    Retorna: 1, 2, 4 o 12.
     """
-    anio_actual = datetime.now().year
+    if not por_anio_hist:
+        return 4
 
-    # Solo años completos
-    por_anio = {}
-    for f, v in pagos_historicos:
-        if f.year < anio_actual and v > 0:
-            por_anio.setdefault(f.year, []).append(v)
+    # Solo años con >= 3 pagos para evitar distorsiones por cambios de frecuencia
+    conteos = [c for c in [len(p) for p in por_anio_hist.values()] if c >= 3]
+    if not conteos:
+        conteos = [len(p) for p in por_anio_hist.values()]
 
-    if not por_anio:
-        return 4  # trimestral por defecto
-
-    # Recuentos de pagos por año (filtrar años con solo 1 pago especial si hay más datos)
-    conteos = [len(pagos) for pagos in por_anio.values()]
-
-    # Mediana de conteos anuales (más robusta que la media ante outliers)
     med = median(conteos)
-
-    # Redondear al valor estándar más cercano
-    if med <= 1.5:   return 1
-    if med <= 3.0:   return 2
-    if med <= 8.0:   return 4
+    if med <= 1.5:  return 1
+    if med <= 3.0:  return 2
+    if med <= 8.0:  return 4
     return 12
 
 
 def descargar_dividendos_anuales(ticker_modelo: str) -> list:
     """
-    Descarga el historial completo de dividendos de Yahoo,
-    los agrupa por año y devuelve lista de (ticker_modelo, anio, dps_anual).
+    Descarga dividendos de Yahoo y devuelve lista de (ticker_modelo, anio, dps_anual).
 
-    Para el año en curso (incompleto), extrapola usando la frecuencia
-    histórica detectada por mediana de conteos anuales.
-
-    Casos especiales cubiertos:
-      - HPQ, MET, MSFT, PRU, UNH: frecuencia irregular en el pasado
-        → la mediana evita que un año con más pagos distorsione la frecuencia
-      - Empresas con un solo año de historial → default 4 (trimestral)
-      - Empresas sin dividendos (BRK/B) → lista vacía sin error
+    Reglas:
+      - Año en curso incompleto -> extrapolar por frecuencia detectada
+      - El DPS del año en curso NUNCA puede ser menor que el del año anterior
+        (las bandas GW nunca deben caer)
+      - Tickers LN (Londres): Yahoo da dividendos en GBP pero precios en GBX
+        (peniques) -> multiplicar DPS x 100 para consistencia de unidades
     """
     yahoo = ticker_a_yahoo(ticker_modelo)
+    es_peniques = ticker_modelo.strip().upper().endswith(" LN")
+
     try:
         divs = yf.Ticker(yahoo).dividends
         if divs.empty:
@@ -168,41 +150,51 @@ def descargar_dividendos_anuales(ticker_modelo: str) -> list:
                 f = fecha.to_pydatetime()
                 if f.tzinfo:
                     f = f.replace(tzinfo=None)
-                if float(importe) > 0:
-                    pagos.append((f, float(importe)))
+                v = float(importe)
+                if v > 0:
+                    pagos.append((f, v))
             except Exception:
                 continue
 
         if not pagos:
             return []
 
-        # Detectar frecuencia usando solo años históricos completos
-        pagos_hist = [(f, v) for f, v in pagos if f.year < anio_actual]
-        frecuencia = detectar_frecuencia_pago(pagos_hist)
-
-        # Agrupar por año
+        # Agrupar por anio
         por_anio = {}
         for f, v in pagos:
             por_anio.setdefault(f.year, []).append((f, v))
 
+        # Detectar frecuencia usando solo anios historicos completos
+        por_anio_hist = {a: p for a, p in por_anio.items() if a < anio_actual}
+        frecuencia = detectar_frecuencia_pago(por_anio_hist)
+
         resultado = []
+        dps_anio_anterior = None  # DPS del ultimo anio completo procesado
+
         for anio, lista_pagos in sorted(por_anio.items()):
             total   = sum(v for _, v in lista_pagos)
             n_pagos = len(lista_pagos)
 
+            # Conversion GBP -> GBX para tickers de Londres
+            if es_peniques:
+                total = total * 100
+
             if anio == anio_actual and n_pagos < frecuencia:
-                # Año en curso incompleto → extrapolar al año completo
+                # Anio en curso incompleto -> extrapolar
                 total_anualizado = total * (frecuencia / n_pagos)
+                # Las bandas nunca deben caer por debajo del anio anterior
+                if dps_anio_anterior and total_anualizado < dps_anio_anterior:
+                    total_anualizado = dps_anio_anterior
                 resultado.append((ticker_modelo, anio, round(total_anualizado, 4)))
             else:
                 resultado.append((ticker_modelo, anio, round(total, 4)))
+                dps_anio_anterior = round(total, 4)
 
         return resultado
 
     except Exception as e:
-        print(f"    ⚠  Dividendos Yahoo error para {yahoo}: {e}")
+        print(f"    \u26a0  Dividendos Yahoo error para {yahoo}: {e}")
         return []
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  Cálculo de umbrales

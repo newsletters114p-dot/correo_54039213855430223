@@ -33,7 +33,7 @@ import yfinance as yf
 # ══════════════════════════════════════════════════════════════════════════════
 #  Configuración
 # ══════════════════════════════════════════════════════════════════════════════
-GH_PAGES_URL = "https://newsletters114p-dot.github.io/wefdjwjdweifnewlkkk/"
+GH_PAGES_URL = "https://newsletters114p-dot.github.io/wefdjwjdweifnewlkkk"
 ASUNTO       = "📊 Dividendo Creciente — Seguimiento semanal"
 DB_PATH      = "./data/graficos.db"
 CSV_PATH     = "./tickers_maestro.csv"
@@ -84,6 +84,8 @@ def ticker_a_yahoo(ticker_modelo: str) -> str:
     sufijo  = SUFIJOS_YAHOO.get(mercado, f".{mercado}")
     if mercado == "HK" and simbolo.isdigit():
         simbolo = simbolo.zfill(4)
+    # Berkshire y otros tickers con "/" → Yahoo usa "-"
+    simbolo = simbolo.replace("/", "-")
     return simbolo + sufijo
 
 
@@ -635,11 +637,11 @@ def main():
     maestro = leer_maestro(args.csv)
     db_data = leer_db(args.db)
 
-    # Tickers del maestro sin datos en DB → intentar precio Yahoo
-    tickers_sin_db = [tk for tk in maestro if tk not in db_data]
-    if tickers_sin_db:
-        print(f"  Tickers en maestro sin datos en DB ({len(tickers_sin_db)}): descargando precios…\n")
-        for tk in tickers_sin_db:
+    # Tickers sin datos GW en DB: solo incluir los que están en TICKERS_SIN_DIV
+    # (empresas sin dividendo como BRK/B que queremos mostrar con precio solamente)
+    TICKERS_SIN_DIV = {"BRK/B US"}
+    for tk in TICKERS_SIN_DIV:
+        if tk not in db_data:
             precio = descargar_precio_actual(tk)
             db_data[tk] = {
                 "ultima_fecha":   None,
@@ -654,9 +656,9 @@ def main():
                 "max_drawdown":   None,
             }
             p_str = f"${precio:.2f}" if precio else "N/D"
-            print(f"    {tk:<20}  precio={p_str}")
-            time.sleep(0.3)
+            print(f"  BRK/B US (sin dividendo)  precio={p_str}")
 
+    # Solo los tickers con datos en DB (+ los explícitos de TICKERS_SIN_DIV)
     tickers = sorted(db_data.keys())
     print(f"\n  Maestro: {len(maestro)} · Total en newsletter: {len(tickers)}")
 

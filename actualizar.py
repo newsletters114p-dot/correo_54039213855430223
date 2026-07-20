@@ -122,20 +122,29 @@ def detectar_frecuencia_pago(por_anio_hist: dict) -> int:
     return 12
 
 
+# Frecuencias de pago fijas para tickers donde Yahoo no tiene historial completo
+# o donde la detección automática falla por cambios de frecuencia históricos.
+# Formato: ticker_modelo -> pagos_por_año
+FRECUENCIAS_FIJAS = {
+    "ACN US": 4,   # paga enero/abril/julio/octubre — Yahoo tiene historial incompleto
+    "ADC US": 12,  # paga mensualmente — Yahoo tiene años con distinta frecuencia
+    "BATS LN": 4,   # paga 4 veces/anio
+    "RIO LN":  2,   # paga 2 veces/anio (dividendo variable)
+    "ULVR LN": 4,   # paga 4 veces/anio
+}
+
+
 def descargar_dividendos_anuales(ticker_modelo: str) -> list:
     """
     Descarga dividendos de Yahoo y devuelve lista de (ticker_modelo, anio, dps_anual).
 
     Reglas:
-      - Año en curso incompleto -> extrapolar por frecuencia detectada
-      - El DPS del año en curso NUNCA puede ser menor que el del año anterior
-        (las bandas GW nunca deben caer)
-      - Tickers LN (Londres): Yahoo da dividendos en GBP pero precios en GBX
-        (peniques) -> multiplicar DPS x 100 para consistencia de unidades
+      - Frecuencia fija si el ticker esta en FRECUENCIAS_FIJAS, si no se detecta automaticamente
+      - Se extrapola CUALQUIER año con menos pagos que la frecuencia (no solo el actual)
+      - El DPS de un año incompleto NUNCA puede ser menor que el del año anterior
+      - Tickers LN: Yahoo da GBP, precios en GBX (peniques) -> x100
     """
     yahoo = ticker_a_yahoo(ticker_modelo)
-    es_peniques = ticker_modelo.strip().upper().endswith(" LN")
-
     try:
         divs = yf.Ticker(yahoo).dividends
         if divs.empty:
@@ -162,30 +171,29 @@ def descargar_dividendos_anuales(ticker_modelo: str) -> list:
         # Agrupar por anio
         por_anio = {}
         for f, v in pagos:
-            por_anio.setdefault(f.year, []).append((f, v))
+            por_anio.setdefault(f.year, []).append(float(v))
 
-        # Detectar frecuencia usando solo anios historicos completos
-        por_anio_hist = {a: p for a, p in por_anio.items() if a < anio_actual}
-        frecuencia = detectar_frecuencia_pago(por_anio_hist)
+        # Frecuencia: fija si esta en el dict, si no detectar automaticamente
+        if ticker_modelo in FRECUENCIAS_FIJAS:
+            frecuencia = FRECUENCIAS_FIJAS[ticker_modelo]
+        else:
+            por_anio_hist = {a: [(None, v) for v in p] for a, p in por_anio.items() if a < anio_actual}
+            frecuencia = detectar_frecuencia_pago(por_anio_hist)
 
         resultado = []
-        dps_anio_anterior = None  # DPS del ultimo anio completo procesado
+        dps_anio_anterior = None
 
-        for anio, lista_pagos in sorted(por_anio.items()):
-            total   = sum(v for _, v in lista_pagos)
-            n_pagos = len(lista_pagos)
+        for anio in sorted(por_anio.keys()):
+            total   = sum(por_anio[anio])
+            n_pagos = len(por_anio[anio])
 
-            # Conversion GBP -> GBX para tickers de Londres
-            if es_peniques:
-                total = total * 100
-
-            if anio == anio_actual and n_pagos < frecuencia:
-                # Anio en curso incompleto -> extrapolar
-                total_anualizado = total * (frecuencia / n_pagos)
-                # Las bandas nunca deben caer por debajo del anio anterior
-                if dps_anio_anterior and total_anualizado < dps_anio_anterior:
-                    total_anualizado = dps_anio_anterior
-                resultado.append((ticker_modelo, anio, round(total_anualizado, 4)))
+            if n_pagos < frecuencia:
+                # Año incompleto (pasado o actual) -> extrapolar
+                dps = total * (frecuencia / n_pagos)
+                # Nunca caer por debajo del año anterior
+                if dps_anio_anterior and dps < dps_anio_anterior:
+                    dps = dps_anio_anterior
+                resultado.append((ticker_modelo, anio, round(dps, 4)))
             else:
                 resultado.append((ticker_modelo, anio, round(total, 4)))
                 dps_anio_anterior = round(total, 4)

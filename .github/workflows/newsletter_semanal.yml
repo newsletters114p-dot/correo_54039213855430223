@@ -1,0 +1,40 @@
+name: Newsletter semanal GW
+
+on:
+  schedule:
+    # Lunes a las 08:00 UTC (10:00 CET)
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+    # Permite lanzarlo manualmente para probar
+
+jobs:
+  newsletter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install yfinance
+
+      - name: Restaurar DB desde cache
+        uses: actions/cache@v4
+        with:
+          path: data/graficos.db
+          key: graficos-db-${{ github.run_id }}
+          restore-keys: |
+            graficos-db-
+
+      - name: Generar y enviar newsletter
+        env:
+          GMAIL_USER:     ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          DESTINATARIOS:  ${{ secrets.DESTINATARIOS }}
+        run: python generar_newsletter.py

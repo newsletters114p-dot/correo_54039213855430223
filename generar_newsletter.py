@@ -39,10 +39,10 @@ DB_PATH      = "./data/graficos.db"
 CSV_PATH     = "./tickers_maestro.csv"
 
 # Umbrales de estado basados en rating
-RATING_INFRAVAL       = 0.05
-RATING_CERCA_INFRAVAL = 0.15
-RATING_CERCA_SOBREVAL = 0.85
-RATING_SOBREVAL       = 0.95
+RATING_INFRAVAL       = 0.30
+RATING_CERCA_INFRAVAL = 0.40
+RATING_CERCA_SOBREVAL = 0.70
+RATING_SOBREVAL       = 0.80
 
 # Orden fijo de sectores
 ORDEN_SECTORES = [
@@ -58,6 +58,17 @@ ORDEN_SECTORES = [
     "Utilities",
     "Materials",
 ]
+
+
+HALL_OF_FAME = {
+    "DHLGY US", "BNS US", "ADRNY US", "MSFT US", "TROW US",
+    "MAA US", "UL US", "AMZN US", "KO US", "BTI US",
+    "AAPL US", "BBY US", "GOOG US", "FRT US", "META US",
+    "NVDA US", "BMO US",
+}
+
+# Tickers con advertencia de datos incorrectos en newsletter y gráfico
+TICKERS_DATOS_INCORRECTOS = {"BATS LN", "RIO LN", "ULVR LN"}
 
 NAVY = "#1B3A5C"
 BLUE = "#2B6CB0"
@@ -286,9 +297,13 @@ def badge_estado(rating):
 
 
 def _link_ticker(tk, url):
+    disc = (
+        ' <span style="color:#92400E;font-size:9px;font-weight:700">⚠ datos hist. incorrectos</span>'
+        if tk in TICKERS_DATOS_INCORRECTOS else ""
+    )
     return (
         f'<a href="{url}" style="color:{NAVY};font-weight:700;'
-        f'text-decoration:none;font-family:{FONT}">{tk}</a>'
+        f'text-decoration:none;font-family:{FONT}">{tk}</a>{disc}'
     )
 
 
@@ -324,6 +339,13 @@ COLS_DETALLE = (
     ["left", "left", "left", "right", "right", "right", "right", "right", "right", "center"],
 )
 
+
+
+COLS_HOF = (
+    ["Ticker", "Nombre", "Precio cierre", "Var. semana",
+     "Infravaloración", "Sobrevaloración", "Rating", "Upside", "Estado"],
+    ["left", "left", "right", "right", "right", "right", "right", "right", "center"],
+)
 
 def _celdas_comunes(f, con_sector=False):
     """Devuelve las celdas numéricas reutilizables en ambos tipos de fila."""
@@ -451,6 +473,73 @@ def bloque_detalle(todos):
 </tr>"""
 
 
+
+def fila_hof(f, bg):
+    """Fila para Hall of Fame: sin columna Tipo, con Estado."""
+    tk      = f["ticker"]
+    db      = f["db"]
+    meta    = f["meta"]
+    moneda  = moneda_ticker(tk)
+    precio  = fmt_precio(db.get("precio"), moneda)
+    canal_i = fmt_precio(db.get("canal_inferior"), moneda)
+    canal_s = fmt_precio(db.get("canal_superior"), moneda)
+    rv      = db.get("rating")
+    uv      = db.get("upside")
+    rating_ = fmt_pct(rv, signo=False) if rv is not None else "—"
+    upside_ = fmt_pct(uv, signo=True)  if uv is not None else "—"
+    sem_txt, sem_color = fmt_semana(f.get("semana"))
+    r_color = "#166534" if (rv or 0) <= 0.5 else "#991B1B"
+    u_color = "#166534" if (uv or 0) >= 0   else "#991B1B"
+    url     = _url_ticker(tk)
+    lnk     = _link_ticker(tk, url)
+    lnk_nom = _link_nombre(meta.get("nombre", tk), url)
+    td_semana = (
+        f'<td align="right" style="padding:7px 10px;border-bottom:1px solid #E2E8F0;'
+        f'font-weight:700;color:{sem_color};font-family:{FONT};font-size:11.5px">'
+        f'{sem_txt}</td>'
+    )
+    celdas = (
+        td(lnk)
+        + td(lnk_nom)
+        + td(precio,  align="right")
+        + td_semana
+        + td(canal_i, align="right", extra="color:#166534;font-weight:700")
+        + td(canal_s, align="right", extra="color:#DC2626;font-weight:700")
+        + td(rating_, align="right", extra=f"color:{r_color};font-weight:700")
+        + td(upside_, align="right", extra=f"color:{u_color};font-weight:700")
+        + f'<td align="center" style="padding:7px 10px;border-bottom:1px solid #E2E8F0">{badge_estado(rv)}</td>'
+    )
+    return f'<tr bgcolor="{bg}">{celdas}</tr>'
+
+
+def bloque_hall_of_fame(filas):
+    if not filas:
+        return ""
+    rows = "".join(
+        fila_hof(f, "#FFFFFF" if i % 2 == 0 else "#F8FAFC")
+        for i, f in enumerate(filas)
+    )
+    cab = cabecera_tabla(*COLS_HOF)
+    cab_titulo = (
+        f'<div style="font-size:16px;font-weight:700;color:{BLUE};'
+        f'font-family:{FONT};padding:12px 0 6px 0;'
+        f'border-bottom:2px solid {BLUE}">Hall of Fame</div>'
+    )
+    return f"""
+<tr>
+  <td style="padding:0 0 8px 0">{cab_titulo}</td>
+</tr>
+<tr>
+  <td style="padding-bottom:20px">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"
+           style="border-collapse:collapse;font-family:{FONT};font-size:11.5px">
+      {cab}
+      {rows}
+    </table>
+  </td>
+</tr>"""
+
+
 def generar_html(todos, fecha_str):
     con_datos = [f for f in todos if f["db"].get("rating") is not None]
     n_inf   = sum(1 for f in con_datos if (f["db"]["rating"] or 1) < RATING_INFRAVAL)
@@ -465,11 +554,20 @@ def generar_html(todos, fecha_str):
         [f for f in con_datos if (f["db"]["rating"] or 0) >= RATING_SOBREVAL],
         key=lambda x: x["db"]["upside"] or 0,
     )
-    todos_s = sorted(todos, key=lambda x: (
-        ORDEN_SECTORES.index(x["meta"].get("sector", ""))
-        if x["meta"].get("sector", "") in ORDEN_SECTORES else 999,
-        x["ticker"],
-    ))
+    # Hall of Fame: bloque aparte, excluidos del detalle por sectores
+    hof    = sorted(
+        [f for f in todos if f["ticker"] in HALL_OF_FAME],
+        key=lambda x: x["ticker"],
+    )
+    hof_tickers = {f["ticker"] for f in hof}
+    todos_s = sorted(
+        [f for f in todos if f["ticker"] not in hof_tickers],
+        key=lambda x: (
+            ORDEN_SECTORES.index(x["meta"].get("sector", ""))
+            if x["meta"].get("sector", "") in ORDEN_SECTORES else 999,
+            x["ticker"],
+        ),
+    )
 
     leyenda_tipo = (
         f'<span style="color:#1B3A5C;font-weight:700">Titular</span> = posición activa en cartera'
@@ -536,6 +634,7 @@ def generar_html(todos, fecha_str):
       {bloque_senales(infrav, "Infravaloradas", "#166534")}
       {bloque_senales(sobrev, "Sobrevaloradas", "#991B1B")}
       {bloque_detalle(todos_s)}
+      {bloque_hall_of_fame(hof)}
     </table>
   </td>
 </tr>

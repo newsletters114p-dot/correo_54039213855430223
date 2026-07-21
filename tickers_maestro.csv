@@ -103,8 +103,8 @@ GEI CN,Gibson Energy Inc,Energy,-,No info
 TPL US,Texas Pacific Land Corp,Energy,-,No info
 CINF US,Cincinnati Financial Corp,Financials,Dividend King,No info
 SPGI US,S&P Global Inc,Financials,Dividend King,No info
-BNS US,Bank of Nova Scotia/The,Financials,Aristocrats,Cantera
-BMO US,Bank of Montreal,Financials,Aristocrats,No info
+BNS CN,Bank of Nova Scotia/The,Financials,Aristocrats,Cantera
+BMO CN,Bank of Montreal,Financials,Aristocrats,No info
 BEN US,Franklin Resources Inc,Financials,Aristocrats,No info
 AFL US,Aflac Inc,Financials,Aristocrats,No info
 TROW US,T Rowe Price Group Inc,Financials,Aristocrats,Cantera
@@ -347,3 +347,5 @@ UGI US,UGI Corp,Utilities,-,Banquillo
 TEP LN,Telecom Plus PLC,Utilities,-,No info
 IMO CN,Imperial Oil Ltd,Energy,Aristocrats,Titular
 RIO LN,Rio Tinto GBP,Materials,Aristocrats,Titular
+BATS LN,British American Tobacco PLC,Consumer Staples,-,Banquillo
+ULVR LN,Unilever PLC,Consumer Staples,-,Banquillo

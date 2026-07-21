@@ -39,10 +39,10 @@ DB_PATH      = "./data/graficos.db"
 CSV_PATH     = "./tickers_maestro.csv"
 
 # Umbrales de estado basados en rating
-RATING_INFRAVAL       = 0.05
-RATING_CERCA_INFRAVAL = 0.10
-RATING_CERCA_SOBREVAL = 0.90
-RATING_SOBREVAL       = 0.95
+RATING_INFRAVAL       = 0.30
+RATING_CERCA_INFRAVAL = 0.40
+RATING_CERCA_SOBREVAL = 0.70
+RATING_SOBREVAL       = 0.80
 
 # Orden fijo de sectores
 ORDEN_SECTORES = [
@@ -69,6 +69,9 @@ HALL_OF_FAME = {
 
 # Tickers con advertencia de datos incorrectos en newsletter y gráfico
 TICKERS_DATOS_INCORRECTOS = {"BATS LN", "RIO LN", "ULVR LN"}
+
+
+ORDEN_TIPO = {"Titular": 0, "Banquillo": 1, "Cantera": 2}
 
 NAVY = "#1B3A5C"
 BLUE = "#2B6CB0"
@@ -100,19 +103,21 @@ def ticker_a_yahoo(ticker_modelo: str) -> str:
     return simbolo + sufijo
 
 
-def estado_desde_rating(rating):
-    """Devuelve (texto, bgcolor, color_texto, color_borde)."""
-    if rating is None:
+def estado_desde_precio(precio, canal_inferior, canal_superior):
+    """Estado basado en comparación directa precio vs bandas."""
+    if precio is None or canal_inferior is None or canal_superior is None:
         return "Neutral", "#F1F5F9", "#64748B", "#CBD5E1"
-    if rating < RATING_INFRAVAL:
+    margen_inf = canal_inferior * 1.03
+    margen_sob = canal_superior * 0.97
+    if precio < canal_inferior:
         return "Infraval.",       "#DCFCE7", "#166534", "#BBF7D0"
-    if rating < RATING_CERCA_INFRAVAL:
+    if precio < margen_inf:
         return "Cerca infraval.", "#DCFCE7", "#15803D", "#BBF7D0"
-    if rating < RATING_CERCA_SOBREVAL:
-        return "Neutral",         "#F1F5F9", "#64748B", "#CBD5E1"
-    if rating < RATING_SOBREVAL:
+    if precio > canal_superior:
+        return "Sobreval.",       "#FEE2E2", "#991B1B", "#FECACA"
+    if precio > margen_sob:
         return "Cerca sobreval.", "#FEF3C7", "#92400E", "#FDE68A"
-    return "Sobreval.",           "#FEE2E2", "#991B1B", "#FECACA"
+    return "Neutral",             "#F1F5F9", "#64748B", "#CBD5E1"
 
 
 def fmt_precio(v, moneda="$"):
@@ -121,10 +126,10 @@ def fmt_precio(v, moneda="$"):
     return f"{moneda}{v:,.2f}"
 
 
-def fmt_pct(v, signo=True):
+def fmt_pct(v, signo=True, decimales=0):
     if v is None:
         return "—"
-    s = f"{v * 100:.0f}%"
+    s = f"{v * 100:.{decimales}f}%"
     if signo and v > 0:
         s = "+" + s
     return s
@@ -134,7 +139,7 @@ def fmt_semana(v):
     try:
         if v is None or (v != v):
             return "—", "#64748B"
-        return fmt_pct(float(v), signo=True), ("#166534" if float(v) >= 0 else "#991B1B")
+        return fmt_pct(float(v), signo=True, decimales=2), ("#166534" if float(v) >= 0 else "#991B1B")
     except Exception:
         return "—", "#64748B"
 
@@ -271,11 +276,13 @@ def badge_tipo(tipo):
     No info   → gris claro
     """
     tipo = (tipo or "No info").strip()
+    if tipo == "No info":
+        tipo = "-"
     estilos = {
         "Titular":   ("#1B3A5C", "700"),
         "Banquillo": ("#64748B", "400"),
         "Cantera":   ("#9A3412", "400"),
-        "No info":   ("#94A3B8", "400"),
+        "-":         ("#94A3B8", "400"),
     }
     color, weight = estilos.get(tipo, ("#94A3B8", "400"))
     return (
@@ -284,8 +291,8 @@ def badge_tipo(tipo):
     )
 
 
-def badge_estado(rating):
-    texto, bg, color, borde = estado_desde_rating(rating)
+def badge_estado(precio=None, canal_inferior=None, canal_superior=None):
+    texto, bg, color, borde = estado_desde_precio(precio, canal_inferior, canal_superior)
     return (
         f'<table cellpadding="0" cellspacing="0" border="0" '
         f'style="border-collapse:collapse;margin:0 auto">'
@@ -401,7 +408,7 @@ def fila_detalle(f, bg):
     rv     = f["db"].get("rating")
     celdas += (
         f'<td align="center" style="padding:7px 10px;'
-        f'border-bottom:1px solid #E2E8F0">{badge_estado(rv)}</td>'
+        f'border-bottom:1px solid #E2E8F0">{badge_estado(f["db"].get("precio"), f["db"].get("canal_inferior"), f["db"].get("canal_superior"))}</td>'
     )
     return f'<tr bgcolor="{bg}">{celdas}</tr>'
 
@@ -441,7 +448,7 @@ def bloque_detalle(todos):
         por_sector.setdefault(s, []).append(f)
 
     sectores_ordenados  = [s for s in ORDEN_SECTORES if s in por_sector]
-    sectores_ordenados += sorted(s for s in por_sector if s not in ORDEN_SECTORES)
+    sectores_ordenados += sorted(s for s in por_sector if s not in ORDEN_SECTORES and s != "-")
 
     cuerpo = ""
     for sector in sectores_ordenados:
@@ -451,7 +458,11 @@ def bloque_detalle(todos):
             f'text-transform:uppercase;font-family:{FONT}">{sector}</td></tr>'
         )
         cuerpo += cabecera_tabla(*COLS_DETALLE)
-        for i, f in enumerate(por_sector[sector]):
+        filas_sector = sorted(
+            por_sector[sector],
+            key=lambda x: ORDEN_TIPO.get(x["meta"].get("tipo", ""), 3)
+        )
+        for i, f in enumerate(filas_sector):
             cuerpo += fila_detalle(f, "#FFFFFF" if i % 2 == 0 else "#F8FAFC")
 
     cab_titulo = (
@@ -541,19 +552,24 @@ def bloque_hall_of_fame(filas):
 
 
 def generar_html(todos, fecha_str):
-    con_datos = [f for f in todos if f["db"].get("rating") is not None]
-    n_inf   = sum(1 for f in con_datos if (f["db"]["rating"] or 1) < RATING_INFRAVAL)
-    n_sob   = sum(1 for f in con_datos if (f["db"]["rating"] or 0) >= RATING_SOBREVAL)
+    hof_set = {f["ticker"] for f in todos if f["ticker"] in HALL_OF_FAME}
+    con_datos = [f for f in todos if f["db"].get("precio") is not None
+                 and f["db"].get("canal_inferior") is not None
+                 and f["ticker"] not in hof_set]
     n_total = len(todos)
 
     infrav = sorted(
-        [f for f in con_datos if (f["db"]["rating"] or 1) < RATING_INFRAVAL],
-        key=lambda x: x["db"]["upside"] or 0, reverse=True,
+        [f for f in con_datos
+         if (f["db"]["precio"] or 0) < (f["db"]["canal_inferior"] or 0)],
+        key=lambda x: (ORDEN_TIPO.get(x["meta"].get("tipo", ""), 3), -(x["db"]["upside"] or 0)),
     )
     sobrev = sorted(
-        [f for f in con_datos if (f["db"]["rating"] or 0) >= RATING_SOBREVAL],
-        key=lambda x: x["db"]["upside"] or 0,
+        [f for f in con_datos
+         if (f["db"]["precio"] or 0) > (f["db"]["canal_superior"] or 0)],
+        key=lambda x: (ORDEN_TIPO.get(x["meta"].get("tipo", ""), 3), (x["db"]["upside"] or 0)),
     )
+    n_inf = len(infrav)
+    n_sob = len(sobrev)
     # Hall of Fame: bloque aparte, excluidos del detalle por sectores
     hof    = sorted(
         [f for f in todos if f["ticker"] in HALL_OF_FAME],

@@ -518,7 +518,7 @@ def fila_hof(f, bg):
         + td(canal_s, align="right", extra="color:#DC2626;font-weight:700")
         + td(rating_, align="right", extra=f"color:{r_color};font-weight:700")
         + td(upside_, align="right", extra=f"color:{u_color};font-weight:700")
-        + f'<td align="center" style="padding:7px 10px;border-bottom:1px solid #E2E8F0">{badge_estado(rv)}</td>'
+        + f'<td align="center" style="padding:7px 10px;border-bottom:1px solid #E2E8F0">{badge_estado(f["db"].get("precio"), f["db"].get("canal_inferior"), f["db"].get("canal_superior"))}</td>'
     )
     return f'<tr bgcolor="{bg}">{celdas}</tr>'
 

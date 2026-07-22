@@ -2,8 +2,8 @@ name: Actualizar GW diario
 
 on:
   schedule:
-    # Cada día laborable a las 22:30 UTC (00:30 CET / cierre de mercados USA)
-    - cron: '30 22 * * 1-5'
+    # Lunes a viernes a las 23:48 UTC (00:48 CET en España)
+    - cron: '48 23 * * 1-5'
   workflow_dispatch:
     # Permite lanzarlo manualmente desde GitHub Actions con un clic
 

@@ -2,10 +2,14 @@ name: Actualizar GW diario
 
 on:
   schedule:
-    # Lunes a viernes a las 23:48 UTC (00:48 CET en España)
-    - cron: '48 23 * * 1-5'
+    # 22:48 UTC = 00:48 hora española (CEST / Verano)
+    # Cambiar a '48 23 * * 1-5' cuando cambie a horario de invierno (CET)
+    - cron: '48 22 * * 1-5'
   workflow_dispatch:
-    # Permite lanzarlo manualmente desde GitHub Actions con un clic
+    # Mantiene la opción de ejecutarlo manualmente desde GitHub si lo necesitas
+
+permissions:
+  contents: write
 
 jobs:
   actualizar:
@@ -14,9 +18,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          # Token con permisos de escritura para hacer commit del HTML
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -40,7 +41,15 @@ jobs:
 
       - name: Commit y push del HTML actualizado
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/index.html
-          git diff --staged --quiet || (git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')" && git stash && git pull --rebase && git stash pop && git push)
+          
+          # Guarda cambios solo si index.html ha cambiado realmente
+          if ! git diff --staged --quiet; then
+            git pull --rebase
+            git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          else
+            echo "No hay cambios en docs/index.html para guardar."
+          fi

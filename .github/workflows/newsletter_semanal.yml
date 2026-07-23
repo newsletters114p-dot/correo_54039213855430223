@@ -2,10 +2,10 @@ name: Newsletter semanal GW
 
 on:
   schedule:
-    # Lunes a las 08:00 UTC (10:00 CET)
-    - cron: '0 8 * * 1'
+    # 03:17 UTC = 05:17 CEST (Hora española en verano)
+    # Ejecuta únicamente los Lunes (1)
+    - cron: '17 3 * * 1'
   workflow_dispatch:
-    # Permite lanzarlo manualmente para probar
 
 jobs:
   newsletter:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Generar y enviar newsletter
         env:
-          GMAIL_USER:     ${{ secrets.GMAIL_USER }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
-          DESTINATARIOS:  ${{ secrets.DESTINATARIOS }}
+          DESTINATARIOS: ${{ secrets.DESTINATARIOS }}
         run: python generar_newsletter.py

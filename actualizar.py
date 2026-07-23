@@ -309,7 +309,7 @@ def generar_gw(conn, csv_maestro="./tickers_maestro.csv"):
 
         # Dividendos históricos y CAGR
         div_rows = conn.execute(
-            "SELECT anio, dps FROM dividendos WHERE ticker=? AND dps > 0 ORDER BY anio",
+            "SELECT anio, dps FROM dividendos WHERE ticker=? AND dps > 0 ORDER BY anio DESC",
             (ticker,)
         ).fetchall()
         divhist  = [[r[0], r[1]] for r in div_rows]

@@ -40,14 +40,7 @@ jobs:
 
       - name: Commit y push del HTML actualizado
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/index.html
-          
-          if ! git diff --staged --quiet; then
-            git pull --rebase
-            git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push
-          else
-            echo "No hay cambios en docs/index.html para guardar."
-          fi
+          git diff --staged --quiet || (git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')" && git stash --include-untracked && git pull --rebase && git stash pop && git push)

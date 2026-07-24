@@ -2,10 +2,8 @@ name: Actualizar GW diario
 
 on:
   schedule:
-    # 02:17 UTC = 04:17 CEST (Hora española en verano)
-    # '0-5' ejecuta de Domingo a Viernes (si prefieres Lunes a Sábado usa '1-6')
-    - cron: '17 2 * * 0-5'
-  workflow_dispatch:
+    # 18:17 UTC = 20:17 CEST (Hora española)
+    - cron: '17 18 * * 0-5'
 
 permissions:
   contents: write

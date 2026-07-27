@@ -2,8 +2,9 @@ name: Newsletter semanal GW
 
 on:
   schedule:
-    # 18:17 UTC del domingo (0 = Domingo)
-    - cron: '17 18 * * 0'
+    # 00:17 UTC del Lunes = 02:17 CEST (Lunes de madrugada en España)
+    # Cero riesgo de que salga en domingo
+    - cron: '17 0 * * 1'
   workflow_dispatch:
 
 jobs:

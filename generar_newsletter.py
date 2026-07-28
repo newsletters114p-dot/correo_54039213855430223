@@ -305,7 +305,7 @@ def badge_estado(precio=None, canal_inferior=None, canal_superior=None):
 
 def _link_ticker(tk, url):
     disc = (
-        ' <span style="color:#92400E;font-size:9px;font-weight:700">⚠ datos hist. incorrectos</span>'
+        ' <span style="color:#92400E;font-size:9px;font-weight:700">⚠ gráfico incompleto</span>'
         if tk in TICKERS_DATOS_INCORRECTOS else ""
     )
     return (

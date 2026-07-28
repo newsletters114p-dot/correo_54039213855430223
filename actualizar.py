@@ -32,6 +32,8 @@ import yfinance as yf
 
 
 # ── Mapeo de sufijos de mercado → sufijo Yahoo Finance ────────────────────────
+CSV_ACTIVOS = "./tickers_activos.csv"
+
 SUFIJOS_YAHOO = {
     "US": "",      # NYSE / NASDAQ
     "CN": ".TO",   # Toronto
@@ -83,6 +85,26 @@ def percentil(valores, p):
 # ══════════════════════════════════════════════════════════════════════════════
 #  Descarga desde Yahoo Finance
 # ══════════════════════════════════════════════════════════════════════════════
+def leer_tickers_activos(csv_path: str) -> list:
+    """
+    Lee tickers_activos.csv y devuelve la lista de tickers a actualizar.
+    Si el fichero no existe, devuelve todos los tickers de la DB.
+    """
+    import csv as _csv
+    path = Path(csv_path)
+    if not path.exists():
+        print(f"  ⚠  {csv_path} no encontrado — se usarán todos los tickers de la DB")
+        return []
+    tickers = []
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        for row in _csv.DictReader(f):
+            tk = row.get("ticker", "").strip()
+            if tk:
+                tickers.append(tk)
+    return tickers
+
+
+
 def descargar_precios(ticker_modelo: str, fecha_desde: str) -> list:
     yahoo = ticker_a_yahoo(ticker_modelo)
     try:
@@ -207,15 +229,26 @@ def descargar_dividendos_anuales(ticker_modelo: str) -> list:
 # ══════════════════════════════════════════════════════════════════════════════
 #  Cálculo de umbrales
 # ══════════════════════════════════════════════════════════════════════════════
-def calcular_umbrales(conn):
+def calcular_umbrales(conn, tickers_filtro=None):
     conn.execute("DELETE FROM umbrales_yield")
-    rows = conn.execute(
-        "SELECT p.ticker, CAST(d.dps AS REAL)/NULLIF(p.precio,0) "
-        "FROM precios p JOIN dividendos d "
-        "ON p.ticker=d.ticker "
-        "AND CAST(strftime('%Y',p.fecha) AS INTEGER)=d.anio "
-        "WHERE d.dps > 0"
-    ).fetchall()
+    if tickers_filtro:
+        placeholders = ",".join("?" * len(tickers_filtro))
+        rows = conn.execute(
+            f"SELECT p.ticker, CAST(d.dps AS REAL)/NULLIF(p.precio,0) "
+            f"FROM precios p JOIN dividendos d "
+            f"ON p.ticker=d.ticker "
+            f"AND CAST(strftime('%Y',p.fecha) AS INTEGER)=d.anio "
+            f"WHERE d.dps > 0 AND p.ticker IN ({placeholders})",
+            tickers_filtro
+        ).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT p.ticker, CAST(d.dps AS REAL)/NULLIF(p.precio,0) "
+            "FROM precios p JOIN dividendos d "
+            "ON p.ticker=d.ticker "
+            "AND CAST(strftime('%Y',p.fecha) AS INTEGER)=d.anio "
+            "WHERE d.dps > 0"
+        ).fetchall()
     cache = {}
     for ticker, y in rows:
         if y: cache.setdefault(ticker, []).append(y)
@@ -241,7 +274,7 @@ def cagr(dps_dict, anios_back):
     return (v1 / v0) ** (1 / anios_back) - 1
 
 
-def generar_gw(conn, csv_maestro="./tickers_maestro.csv"):
+def generar_gw(conn, tickers_override=None, csv_maestro="./tickers_maestro.csv"):
     import csv as _csv
 
     # Leer nombres del CSV maestro (punto 10: nombres siempre desde aquí)
@@ -254,9 +287,19 @@ def generar_gw(conn, csv_maestro="./tickers_maestro.csv"):
                 if tk and nm:
                     nombres[tk] = nm
 
-    tickers = [r[0] for r in conn.execute(
-        "SELECT DISTINCT ticker FROM metricas_completas ORDER BY ticker"
-    ).fetchall()]
+    # Usar tickers pasados directamente (ya filtrados en main)
+    if tickers_override:
+        tickers = tickers_override
+    else:
+        tickers_activos = leer_tickers_activos(CSV_ACTIVOS)
+        if tickers_activos:
+            tickers = [tk for tk in tickers_activos if conn.execute(
+                "SELECT 1 FROM metricas_completas WHERE ticker=? LIMIT 1", (tk,)
+            ).fetchone()]
+        else:
+            tickers = [r[0] for r in conn.execute(
+                "SELECT DISTINCT ticker FROM metricas_completas ORDER BY ticker"
+            ).fetchall()]
 
     gw = {}
     for ticker in tickers:
@@ -309,7 +352,7 @@ def generar_gw(conn, csv_maestro="./tickers_maestro.csv"):
 
         # Dividendos históricos y CAGR
         div_rows = conn.execute(
-            "SELECT anio, dps FROM dividendos WHERE ticker=? AND dps > 0 ORDER BY anio DESC",
+            "SELECT anio, dps FROM dividendos WHERE ticker=? AND dps > 0 ORDER BY anio",
             (ticker,)
         ).fetchall()
         divhist  = [[r[0], r[1]] for r in div_rows]
@@ -555,11 +598,22 @@ def main():
     conn = sqlite3.connect(str(db_path))
     conn.execute("PRAGMA journal_mode=WAL")
 
-    # ── PASO 1: Obtener tickers de la DB ──────────────────────────────────────
-    tickers = [r[0] for r in conn.execute(
-        "SELECT DISTINCT ticker FROM precios ORDER BY ticker"
-    ).fetchall()]
-    print(f"[ PASO 1 ] {len(tickers)} tickers en DB: {', '.join(tickers)}\n")
+    # ── PASO 1: Obtener tickers de tickers_activos.csv ────────────────────────
+    tickers_activos = leer_tickers_activos(CSV_ACTIVOS)
+    if tickers_activos:
+        # Solo los tickers activos que además tienen datos en la DB
+        tickers_en_db = {r[0] for r in conn.execute(
+            "SELECT DISTINCT ticker FROM precios"
+        ).fetchall()}
+        tickers = [tk for tk in tickers_activos if tk in tickers_en_db]
+        sin_db  = [tk for tk in tickers_activos if tk not in tickers_en_db]
+        if sin_db:
+            print(f"  ⚠  En tickers_activos pero sin datos en DB (ejecuta carga_inicial.py): {', '.join(sin_db)}")
+    else:
+        tickers = [r[0] for r in conn.execute(
+            "SELECT DISTINCT ticker FROM precios ORDER BY ticker"
+        ).fetchall()]
+    print(f"[ PASO 1 ] {len(tickers)} tickers a actualizar: {', '.join(tickers)}\n")
 
     # ── PASO 2: Descargar precios nuevos desde Yahoo ──────────────────────────
     print("[ PASO 2 ] Descargando precios desde Yahoo Finance…\n")
@@ -609,7 +663,7 @@ def main():
 
     # ── PASO 4: Recalcular umbrales ───────────────────────────────────────────
     print(f"\n[ PASO 4 ] Recalculando umbrales de yield…\n")
-    calcular_umbrales(conn)
+    calcular_umbrales(conn, tickers)
     rows = conn.execute(
         "SELECT ticker, yield_overvalued, yield_undervalued, yield_mediana "
         "FROM umbrales_yield ORDER BY ticker"
@@ -619,7 +673,7 @@ def main():
 
     # ── PASO 5: Regenerar HTML ────────────────────────────────────────────────
     print(f"\n[ PASO 5 ] Generando HTML…\n")
-    gw_data = generar_gw(conn)
+    gw_data = generar_gw(conn, tickers_override=tickers)
     generar_html(gw_data, str(html_path), ts)
     print(f"  ✓  {len(gw_data)} tickers en docs/index.html")
     print(f"  ✓  → {html_path.resolve()}")

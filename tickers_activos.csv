@@ -1,0 +1,69 @@
+ticker,sector,tipo
+HPQ US,Information Technology,Titular
+TXN US,Information Technology,Titular
+ACN US,Information Technology,Banquillo
+AVGO US,Information Technology,Banquillo
+CSCO US,Information Technology,Banquillo
+QCOM US,Information Technology,Banquillo
+VZ US,Communication Services,Titular
+CMCSA US,Communication Services,Banquillo
+NXST US,Communication Services,Banquillo
+WLY US,Communication Services,Banquillo
+ABT US,Health Care,Titular
+BMY US,Health Care,Titular
+MRK US,Health Care,Titular
+ABBV US,Health Care,Banquillo
+AMGN US,Health Care,Banquillo
+JNJ US,Health Care,Banquillo
+MDT US,Health Care,Banquillo
+UNH US,Health Care,Banquillo
+ADP US,Industrials,Titular
+CNI US,Industrials,Titular
+GD US,Industrials,Banquillo
+LMT US,Industrials,Banquillo
+SNA US,Industrials,Banquillo
+UPS US,Industrials,Cantera
+BLK US,Financials,Titular
+BRK/B US,Financials,Titular
+PRU US,Financials,Titular
+BAC US,Financials,Banquillo
+JPM US,Financials,Banquillo
+V US,Financials,Banquillo
+BMO CN,Financials,Cantera
+BNS CN,Financials,Cantera
+MET US,Financials,Cantera
+ESS US,Real Estate,Titular
+O US,Real Estate,Titular
+PLD US,Real Estate,Titular
+CUBE US,Real Estate,Banquillo
+EQIX US,Real Estate,Banquillo
+ADC US,Real Estate,Cantera
+MO US,Consumer Staples,Titular
+PEP US,Consumer Staples,Titular
+BATS LN,Consumer Staples,Banquillo
+HSY US,Consumer Staples,Banquillo
+PG US,Consumer Staples,Banquillo
+TGT US,Consumer Staples,Banquillo
+ULVR LN,Consumer Staples,Banquillo
+HD US,Consumer Discretionary,Titular
+LOW US,Consumer Discretionary,Titular
+GPC US,Consumer Discretionary,Banquillo
+MCD US,Consumer Discretionary,Banquillo
+SBUX US,Consumer Discretionary,Banquillo
+CNQ CN,Energy,Titular
+ENB CN,Energy,Titular
+IMO CN,Energy,Titular
+CVX US,Energy,Banquillo
+XOM US,Energy,Banquillo
+NEE US,Utilities,Titular
+EIX US,Utilities,Titular
+ES US,Utilities,Titular
+BKH US,Utilities,Banquillo
+POR US,Utilities,Banquillo
+CWT US,Utilities,Banquillo
+AWR US,Utilities,Banquillo
+RGLD US,Materials,Titular
+RIO LN,Materials,Titular
+BHP US,Materials,Banquillo
+FNV US,Materials,Banquillo
+LIN US,Materials,Banquillo

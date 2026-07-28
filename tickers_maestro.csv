@@ -104,7 +104,7 @@ TPL US,Texas Pacific Land Corp,Energy,-,No info
 CINF US,Cincinnati Financial Corp,Financials,Dividend King,No info
 SPGI US,S&P Global Inc,Financials,Dividend King,No info
 BNS CN,Bank of Nova Scotia/The,Financials,Aristocrats,Cantera
-BMO CN,Bank of Montreal,Financials,Aristocrats,No info
+BMO CN,Bank of Montreal,Financials,Aristocrats, Cantera
 BEN US,Franklin Resources Inc,Financials,Aristocrats,No info
 AFL US,Aflac Inc,Financials,Aristocrats,No info
 TROW US,T Rowe Price Group Inc,Financials,Aristocrats,Cantera
@@ -136,7 +136,7 @@ KEY US,KeyCorp,Financials,Achievers,No info
 GS US,Goldman Sachs Group Inc/The,Financials,Achievers,No info
 AGO US,Assured Guaranty Ltd,Financials,Achievers,No info
 AON US,Aon PLC,Financials,Achievers,No info
-MET US,MetLife Inc,Financials,Achievers,No info
+MET US,MetLife Inc,Financials,Achievers,Cantera
 NDAQ US,Nasdaq Inc,Financials,Achievers,No info
 ICE US,Intercontinental Exchange Inc,Financials,Achievers,No info
 BAER SW,Julius Baer Group Ltd,Financials,Aristocrats,No info
@@ -218,7 +218,7 @@ LECO US,Lincoln Electric Holdings Inc,Industrials,Aristocrats,No info
 CNI US,Canadian National Railway Co,Industrials,Aristocrats,Titular
 CHRW US,CH Robinson Worldwide Inc,Industrials,Aristocrats,No info
 FAST US,Fastenal Co,Industrials,Aristocrats,No info
-LHX US,L3Harris Technologies Inc,Industrials,Aristocrats,No info
+LHX US,L3Harris Technologies Inc,Industrials,Aristocrats, cantera
 CKN LN,Clarkson PLC,Industrials,Aristocrats,No info
 LMT US,Lockheed Martin Corp,Industrials,Achievers,Banquillo
 WM US,Waste Management Inc,Industrials,Achievers,No info
@@ -235,7 +235,7 @@ HUBB US,Hubbell Inc,Industrials,Achievers,No info
 BR US,Broadridge Financial Solutions,Industrials,Achievers,No info
 UNP US,Union Pacific Corp,Industrials,Achievers,No info
 CMI US,Cummins Inc,Industrials,Achievers,No info
-UPS US,United Parcel Service Inc,Industrials,Achievers,No info
+UPS US,United Parcel Service Inc,Industrials,Achievers, Cantera
 SNA US,Snap-on Inc,Industrials,Achievers,Banquillo
 AIT US,Applied Industrial Technologie,Industrials,Achievers,No info
 LII US,Lennox International Inc,Industrials,Achievers,No info
@@ -317,7 +317,7 @@ MAA US,Mid-America Apartment Communit,Real Estate,Achievers,No info
 ARE US,Alexandria Real Estate Equitie,Real Estate,Achievers,No info
 PLD US,Prologis Inc,Real Estate,Achievers,Titular
 AMT US,American Tower Corp,Real Estate,Achievers,Banquillo
-ADC US,Agree Realty Corp,Real Estate,Aristocrats,No info
+ADC US,Agree Realty Corp,Real Estate,Aristocrats,Cantera
 STAG US,STAG Industrial Inc,Real Estate,Achievers,No info
 EQIX US,Equinix Inc,Real Estate,Achievers,Banquillo
 IIPR US,Innovative Industrial Properti,Real Estate,-,No info

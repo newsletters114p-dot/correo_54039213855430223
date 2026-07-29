@@ -2,8 +2,8 @@ name: Actualizar GW diario
 
 on:
   schedule:
-    # 18:17 UTC = 20:17 CEST (Hora española)
     - cron: '17 18 * * 0-5'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -42,11 +42,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/index.html
-          if ! git diff --staged --quiet; then
-            git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')"
-            if ! git diff --quiet; then git stash; fi
-            git pull --rebase
-            if git stash list | grep -q stash; then git stash pop; fi
-            git push
-          fi
-
+          git diff --staged --quiet || (git commit -m "📊 Actualización automática $(date -u +'%Y-%m-%d %H:%M UTC')" && git stash --include-untracked && git pull --rebase && git stash pop && git push)

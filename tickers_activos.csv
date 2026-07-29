@@ -11,11 +11,11 @@ NXST US,Communication Services,Banquillo
 WLY US,Communication Services,Banquillo
 ABT US,Health Care,Titular
 BMY US,Health Care,Titular
-MRK US,Health Care,Titular
+MRK US,Health Care,Banquillo
 ABBV US,Health Care,Banquillo
 AMGN US,Health Care,Banquillo
 JNJ US,Health Care,Banquillo
-MDT US,Health Care,Banquillo
+MDT US,Health Care,Titular
 UNH US,Health Care,Banquillo
 ADP US,Industrials,Titular
 CNI US,Industrials,Titular
@@ -76,5 +76,3 @@ MSFT US,Hall of Fame,Hall of Fame
 NVDA US,Hall of Fame,Hall of Fame
 TROW US,Hall of Fame,Hall of Fame
 XOM US,Energy,Banquillo
-AEP US,Utilities,Cantera
-DUK US,Utilities,Cantera

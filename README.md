@@ -6,6 +6,43 @@ Herramienta de valoración de acciones de dividendo basada en la metodología de
 
 ---
 
+## GUÍA DE USO
+
+**Cambiar tipo o sector de un activo**
+Edita `tickers_activos.csv` directamente en GitHub → commit. Esa noche se actualiza el HTML y el siguiente lunes sale en el correo.
+
+**Añadir o eliminar un activo**
+GitHub → Actions → "Gestionar ticker" → Run workflow. Rellena los campos y ejecuta. En ~5 minutos tienes el HTML y el `preview.html` actualizados.
+
+**Ver cómo quedará el próximo correo**
+Abre `preview.html` en el repo — es exactamente lo que se enviará el lunes.
+
+**El resto es automático**
+- Lunes a viernes 18:17 UTC → precios y dividendos actualizados, HTML regenerado
+- Lunes 08:00 UTC → correo enviado a los destinatarios
+
+**Añadir un activo sin historial CSV**
+Usa el workflow "Gestionar ticker" — genera el CSV desde Yahoo automáticamente si no existe en `REPOSITORIO_GRAFICOS`.
+
+**Añadir un activo que ya tiene historial en REPOSITORIO_GRAFICOS**
+Edita `tickers_activos.csv` directamente en GitHub con la nueva fila → commit. No hace falta usar el workflow.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
 ## ¿Por qué el repo es público?
 
 Este repositorio es público por una razón técnica concreta: **GitHub Pages gratuito solo funciona con repos públicos**.

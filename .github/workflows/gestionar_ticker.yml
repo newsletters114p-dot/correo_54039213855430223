@@ -116,9 +116,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: data/graficos.db
-          key: graficos-db-v1
+          key: graficos-db-${{ github.run_id }}
           restore-keys: |
-            graficos-db-v1
+            graficos-db-
 
       - name: Ejecutar gestionar_ticker.py
         env:
@@ -139,16 +139,14 @@ jobs:
         with:
           path: data/graficos.db
           key: graficos-db-${{ github.run_id }}
-          restore-keys: |
-            graficos-db-
 
       - name: Commit y push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tickers_activos.csv docs/index.html REPOSITORIO_GRAFICOS/ || true
+          git add tickers_activos.csv tickers_maestro.csv docs/index.html preview.html REPOSITORIO_GRAFICOS/ || true
           if ! git diff --staged --quiet; then
-            git commit -m "🔧 Gestionar tickers: ${{ github.event.inputs.ticker_1 }} ${{ github.event.inputs.ticker_2 }}"
+            git commit -m "🔧 Gestionar: ${{ github.event.inputs.ticker_1 }} ${{ github.event.inputs.ticker_2 }}"
             git pull --rebase
             git push
           else

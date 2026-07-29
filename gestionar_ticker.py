@@ -1,12 +1,11 @@
 """
-gestionar_ticker.py  v2
+gestionar_ticker.py  v3
 ═══════════════════════════════════════════════════════════════════════════════
 Gestiona hasta 2 operaciones (añadir/eliminar) en una sola ejecución.
-Al final ejecuta carga_inicial.py + actualizar.py una sola vez.
-
-Variables de entorno (desde el workflow):
-    ACCION_1, TICKER_1, NOMBRE_1, SECTOR_1, TIPO_1
-    ACCION_2, TICKER_2, NOMBRE_2, SECTOR_2, TIPO_2
+Al final:
+  - Añade el ticker a tickers_maestro.csv si no está
+  - Ejecuta carga_inicial.py + actualizar.py
+  - Genera preview.html
 """
 
 import csv
@@ -18,10 +17,8 @@ from pathlib import Path
 
 import yfinance as yf
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Configuración
-# ══════════════════════════════════════════════════════════════════════════════
 CSV_ACTIVOS   = "./tickers_activos.csv"
+CSV_MAESTRO   = "./tickers_maestro.csv"
 REPO_GRAFICOS = "./REPOSITORIO_GRAFICOS"
 
 COL_DATE  = 19
@@ -37,9 +34,6 @@ SUFIJOS_YAHOO = {
     "SE": ".ST", "DC": ".CO", "NO": ".OL", "FH": ".HE",
 }
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Helpers
-# ══════════════════════════════════════════════════════════════════════════════
 def normalizar(tk):
     return " ".join(tk.strip().upper().split())
 
@@ -88,7 +82,7 @@ def generar_csv_desde_yahoo(tk, output_path):
             cols[COL_ANIO] = str(a); cols[COL_DIV] = str(dps[a]); visto.add(a)
         lines.append(",".join(cols))
     Path(output_path).write_text("\n".join(lines), encoding="cp1250")
-    print(f"  ✓  CSV generado: {len(lines)-DATA_START} precios, {len(dps)} años dividendos")
+    print(f"  ✓  CSV: {len(lines)-DATA_START} precios, {len(dps)} años dividendos")
     return True
 
 def leer_activos():
@@ -104,10 +98,33 @@ def escribir_activos(filas, fieldnames):
         writer.writeheader()
         writer.writerows(filas)
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Operaciones
-# ══════════════════════════════════════════════════════════════════════════════
-def op_añadir(ticker, nombre, sector, tipo, hay_cambios):
+def actualizar_maestro(ticker, nombre, sector):
+    """Añade el ticker a tickers_maestro.csv si no está."""
+    if not Path(CSV_MAESTRO).exists():
+        return
+    with open(CSV_MAESTRO, encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames)
+        filas = list(reader)
+
+    existe = any(r.get("ticker", "").strip() == ticker for r in filas)
+    if not existe and nombre:
+        filas.append({
+            "ticker": ticker,
+            "nombre": nombre,
+            "sector": sector,
+            "indice": "-",
+            "tipo":   "No info",
+        })
+        with open(CSV_MAESTRO, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(filas)
+        print(f"  ✓  Añadido a tickers_maestro.csv: {ticker} — {nombre}")
+    else:
+        print(f"  –  Ya existe en tickers_maestro.csv: {ticker}")
+
+def op_añadir(ticker, nombre, sector, tipo):
     print(f"\n  ── AÑADIR: {ticker} | {sector} | {tipo}")
     filas, fieldnames = leer_activos()
     existe = any(r["ticker"].strip() == ticker for r in filas)
@@ -132,6 +149,8 @@ def op_añadir(ticker, nombre, sector, tipo, hay_cambios):
         if not generar_csv_desde_yahoo(ticker, nuevo_csv):
             print(f"  ✗  No se pudo generar el CSV para {ticker}")
             return False
+
+    actualizar_maestro(ticker, nombre, sector)
     return True
 
 def op_eliminar(ticker):
@@ -140,15 +159,12 @@ def op_eliminar(ticker):
     antes = len(filas)
     filas = [r for r in filas if r["ticker"].strip() != ticker]
     if len(filas) == antes:
-        print(f"  ⚠  '{ticker}' no encontrado en tickers_activos.csv — nada que hacer")
+        print(f"  ⚠  '{ticker}' no encontrado — nada que hacer")
         return False
     escribir_activos(filas, fieldnames)
     print(f"  ✓  Eliminado de tickers_activos.csv")
     return True
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Main
-# ══════════════════════════════════════════════════════════════════════════════
 def main():
     ops = []
     for i in [1, 2]:
@@ -165,16 +181,16 @@ def main():
         return
 
     sep = "═" * 60
-    print(f"\n{sep}\n  Gestionar ticker v2 — {len(ops)} operación(es)\n{sep}")
+    print(f"\n{sep}\n  Gestionar ticker v3 — {len(ops)} operación(es)\n{sep}")
 
-    hay_cambios = False
+    hay_cambios   = False
     necesita_carga = False
 
     for accion, ticker, nombre, sector, tipo in ops:
         if accion == "añadir":
-            ok = op_añadir(ticker, nombre, sector, tipo, hay_cambios)
+            ok = op_añadir(ticker, nombre, sector, tipo)
             if ok:
-                hay_cambios = True
+                hay_cambios    = True
                 necesita_carga = True
         elif accion == "eliminar":
             ok = op_eliminar(ticker)
@@ -191,6 +207,10 @@ def main():
 
     print(f"\n  Ejecutando actualizar.py…")
     subprocess.run([sys.executable, "actualizar.py"], check=True)
+
+    print(f"\n  Generando preview.html…")
+    subprocess.run([sys.executable, "generar_newsletter.py",
+                    "--solo-html", "--out", "preview.html"], check=True)
 
     print(f"\n{sep}\n  Completado\n{sep}")
 

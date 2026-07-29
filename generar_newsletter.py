@@ -354,7 +354,7 @@ def bloque_hall_of_fame(filas):
 </td></tr>"""
 
 def generar_html(todos, fecha_str):
-    hof_set   = {f["ticker"] for f in todos if f["ticker"] in HALL_OF_FAME}
+    hof_set = {f["ticker"] for f in todos if f["meta"].get("sector") == "Hall of Fame"}
     con_datos = [f for f in todos if f["ticker"] not in hof_set
                  and f["db"].get("precio") is not None
                  and f["db"].get("canal_inferior") is not None]
@@ -483,7 +483,7 @@ def main():
             print(f"  {tk} (sin dividendo) precio={'$'+str(precio) if precio else 'N/D'}")
 
     # Lista final de tickers: activos + Hall of Fame + sin dividendo
-    tickers_visibles = set(activos.keys()) | HALL_OF_FAME | TICKERS_SIN_DIV
+    tickers_visibles = set(activos.keys()) | TICKERS_SIN_DIV
     tickers = sorted(tickers_visibles)
     print(f"  Activos: {len(activos)} · HoF: {len(HALL_OF_FAME)} · Total: {len(tickers)}")
 
@@ -495,9 +495,7 @@ def main():
     todos = []
     for tk in tickers:
         # Sector y tipo: SIEMPRE de tickers_activos (fuente de verdad)
-        if tk in HALL_OF_FAME:
-            sector, tipo = "Hall of Fame", "Hall of Fame"
-        elif tk in activos:
+        if tk in activos:
             sector = activos[tk]["sector"]
             tipo   = activos[tk]["tipo"]
         else:

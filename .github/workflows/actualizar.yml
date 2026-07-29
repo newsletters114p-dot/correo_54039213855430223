@@ -29,9 +29,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: data/graficos.db
-          key: graficos-db-v2
+          key: graficos-db-v1
           restore-keys: |
-            graficos-db-v2
+            graficos-db-v1
 
       - name: Ejecutar actualizar.py
         run: python actualizar.py

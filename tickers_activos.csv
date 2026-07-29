@@ -62,7 +62,7 @@ ES US,Utilities,Titular
 BKH US,Utilities,Banquillo
 POR US,Utilities,Banquillo
 CWT US,Utilities,Banquillo
-AWR US,Utilities,Titular
+AWR US,Utilities,Banquillo
 RGLD US,Materials,Titular
 RIO LN,Materials,Titular
 BHP US,Materials,Banquillo
@@ -76,5 +76,4 @@ MAA US,Hall of Fame,Hall of Fame
 MSFT US,Hall of Fame,Hall of Fame
 NVDA US,Hall of Fame,Hall of Fame
 TROW US,Hall of Fame,Hall of Fame
-GOOG US,Hall of Fame,Hall of Fame
-WEC US,Utilities,Banquillo
+

@@ -138,7 +138,9 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: data/graficos.db
-          key: graficos-db-v1
+          key: graficos-db-${{ github.run_id }}
+          restore-keys: |
+            graficos-db-
 
       - name: Commit y push
         run: |

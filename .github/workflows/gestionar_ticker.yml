@@ -3,26 +3,28 @@ name: Gestionar ticker
 on:
   workflow_dispatch:
     inputs:
-      accion:
-        description: 'Acción a realizar'
+      accion_1:
+        description: 'Operación 1'
         required: true
         type: choice
         options:
+          - ninguna
           - añadir
           - eliminar
-      ticker:
-        description: 'Ticker (ej: NEE US)'
-        required: true
-        type: string
-      nombre:
-        description: 'Nombre de la empresa (ej: NextEra Energy Inc)'
+      ticker_1:
+        description: 'Ticker 1 (ej: NEE US)'
         required: false
         type: string
-      sector:
-        description: 'Sector'
+      nombre_1:
+        description: 'Nombre 1 (solo si añadir)'
+        required: false
+        type: string
+      sector_1:
+        description: 'Sector 1 (solo si añadir)'
         required: false
         type: choice
         options:
+          - '-'
           - Information Technology
           - Communication Services
           - Health Care
@@ -35,11 +37,56 @@ on:
           - Utilities
           - Materials
           - Hall of Fame
-      tipo:
-        description: 'Tipo'
+      tipo_1:
+        description: 'Tipo 1 (solo si añadir)'
         required: false
         type: choice
         options:
+          - '-'
+          - Titular
+          - Banquillo
+          - Cantera
+          - Hall of Fame
+      accion_2:
+        description: 'Operación 2'
+        required: true
+        type: choice
+        options:
+          - ninguna
+          - añadir
+          - eliminar
+      ticker_2:
+        description: 'Ticker 2 (ej: WEC US)'
+        required: false
+        type: string
+      nombre_2:
+        description: 'Nombre 2 (solo si añadir)'
+        required: false
+        type: string
+      sector_2:
+        description: 'Sector 2 (solo si añadir)'
+        required: false
+        type: choice
+        options:
+          - '-'
+          - Information Technology
+          - Communication Services
+          - Health Care
+          - Industrials
+          - Financials
+          - Real Estate
+          - Consumer Staples
+          - Consumer Discretionary
+          - Energy
+          - Utilities
+          - Materials
+          - Hall of Fame
+      tipo_2:
+        description: 'Tipo 2 (solo si añadir)'
+        required: false
+        type: choice
+        options:
+          - '-'
           - Titular
           - Banquillo
           - Cantera
@@ -75,20 +122,31 @@ jobs:
 
       - name: Ejecutar gestionar_ticker.py
         env:
-          ACCION:  ${{ github.event.inputs.accion }}
-          TICKER:  ${{ github.event.inputs.ticker }}
-          NOMBRE:  ${{ github.event.inputs.nombre }}
-          SECTOR:  ${{ github.event.inputs.sector }}
-          TIPO:    ${{ github.event.inputs.tipo }}
+          ACCION_1:  ${{ github.event.inputs.accion_1 }}
+          TICKER_1:  ${{ github.event.inputs.ticker_1 }}
+          NOMBRE_1:  ${{ github.event.inputs.nombre_1 }}
+          SECTOR_1:  ${{ github.event.inputs.sector_1 }}
+          TIPO_1:    ${{ github.event.inputs.tipo_1 }}
+          ACCION_2:  ${{ github.event.inputs.accion_2 }}
+          TICKER_2:  ${{ github.event.inputs.ticker_2 }}
+          NOMBRE_2:  ${{ github.event.inputs.nombre_2 }}
+          SECTOR_2:  ${{ github.event.inputs.sector_2 }}
+          TIPO_2:    ${{ github.event.inputs.tipo_2 }}
         run: python gestionar_ticker.py
+
+      - name: Guardar DB en cache
+        uses: actions/cache/save@v4
+        with:
+          path: data/graficos.db
+          key: graficos-db-v1
 
       - name: Commit y push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tickers_activos.csv docs/index.html data/graficos.db || true
+          git add tickers_activos.csv docs/index.html REPOSITORIO_GRAFICOS/ || true
           if ! git diff --staged --quiet; then
-            git commit -m "🔧 ${{ github.event.inputs.accion }}: ${{ github.event.inputs.ticker }}"
+            git commit -m "🔧 Gestionar tickers: ${{ github.event.inputs.ticker_1 }} ${{ github.event.inputs.ticker_2 }}"
             git pull --rebase
             git push
           else

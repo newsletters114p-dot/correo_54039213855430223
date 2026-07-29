@@ -211,6 +211,7 @@ def main():
     print(f"\n  Generando preview.html…")
     subprocess.run([sys.executable, "generar_newsletter.py",
                     "--solo-html", "--out", "preview.html"], check=True)
+    print(f"  ✓  preview.html generado — refleja exactamente lo que saldrá en el correo")
 
     print(f"\n{sep}\n  Completado\n{sep}")
 

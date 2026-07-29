@@ -184,14 +184,12 @@ def accion_añadir(ticker, nombre, sector, tipo):
             print(f"     El ticker se añadió a tickers_activos.csv pero sin datos históricos")
             return
 
-    # Carga inicial y actualización
+    # Carga inicial del nuevo ticker
     print(f"\n  Ejecutando carga_inicial.py…")
     subprocess.run([sys.executable, "carga_inicial.py"], check=True)
 
-    print(f"\n  Ejecutando actualizar.py…")
-    subprocess.run([sys.executable, "actualizar.py"], check=True)
-
-    print(f"\n  ✓  {ticker} añadido y procesado correctamente")
+    print(f"\n  ✓  {ticker} añadido correctamente")
+    print(f"     El HTML se actualizará en la próxima ejecución de 'Actualizar GW diario'")
 
 
 def accion_eliminar(ticker):
@@ -211,11 +209,8 @@ def accion_eliminar(ticker):
     escribir_activos(filas, fieldnames)
     print(f"  ✓  Ticker eliminado de tickers_activos.csv")
 
-    # Regenerar HTML sin el ticker
-    print(f"\n  Ejecutando actualizar.py…")
-    subprocess.run([sys.executable, "actualizar.py"], check=True)
-
-    print(f"\n  ✓  {ticker} eliminado y HTML actualizado")
+    print(f"\n  ✓  {ticker} eliminado correctamente")
+    print(f"     El HTML se actualizará en la próxima ejecución de 'Actualizar GW diario'")
 
 
 # ══════════════════════════════════════════════════════════════════════════════

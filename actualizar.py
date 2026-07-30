@@ -456,6 +456,7 @@ function renderGW(tk){
   if(!G){$('#gwBody').style.display='none';$('#gwEmpty').style.display='';return;}
   $('#gwBody').style.display='';$('#gwEmpty').style.display='none';
   const s=G.series,sm=G.summary;
+  const rPc=v=>v==null?'—':(v*100).toFixed(0)+'%';
   const rPc2=v=>v==null?'—':(v*100).toFixed(2)+'%';
   const d2=v=>v==null?'—':'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const ratingColor=sm.rating>=0.66?'#1f9d55':sm.rating>=0.4?'#d99100':'#d64545';

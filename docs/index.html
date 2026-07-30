@@ -54,7 +54,7 @@ table.corp tr:nth-child(even) td{background:#F3F7FC}
     <table class="corp" id="gwdivtable"></table>
   </div>
 </div>
-<div class="ts">Actualizado: 2026-07-30 14:06 UTC</div>
+<div class="ts">Actualizado: 2026-07-30 14:13 UTC</div>
 
 <script>
 const PAL={navy:'#1F3864',red:'#FF0000',green:'#00B050',blueL:'#9DC3E6'};
@@ -66,6 +66,7 @@ function renderGW(tk){
   if(!G){$('#gwBody').style.display='none';$('#gwEmpty').style.display='';return;}
   $('#gwBody').style.display='';$('#gwEmpty').style.display='none';
   const s=G.series,sm=G.summary;
+  const rPc=v=>v==null?'—':(v*100).toFixed(0)+'%';
   const rPc2=v=>v==null?'—':(v*100).toFixed(2)+'%';
   const d2=v=>v==null?'—':'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const ratingColor=sm.rating>=0.66?'#1f9d55':sm.rating>=0.4?'#d99100':'#d64545';

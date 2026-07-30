@@ -456,7 +456,8 @@ function renderGW(tk){
   if(!G){$('#gwBody').style.display='none';$('#gwEmpty').style.display='';return;}
   $('#gwBody').style.display='';$('#gwEmpty').style.display='none';
   const s=G.series,sm=G.summary;
-  const rPc=v=>v==null?'—':(v*100).toFixed(0)+'%';
+  const rPc2=v=>v==null?'—':(v*100).toFixed(2)+'%';
+  const rPc2=v=>v==null?'—':(v*100).toFixed(2)+'%';
   const d2=v=>v==null?'—':'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const ratingColor=sm.rating>=0.66?'#1f9d55':sm.rating>=0.4?'#d99100':'#d64545';
 
@@ -525,15 +526,15 @@ function renderGW(tk){
   // ── KV ───────────────────────────────────────────────────────────────────
   $('#gwkv').innerHTML=[
     ['Precio actual',        d2(sm.precio_actual)],
-    ['Yield actual',         rPc(sm.yield_actual)],
-    ['Rating',               `<span class="badge" style="background:${ratingColor}">${rPc(sm.rating)}</span>`],
-    ['Upside',               `<b style="color:${sm.upside>=0?'#1f9d55':'#d64545'}">${rPc(sm.upside)}</b>`],
+    ['Yield actual',         rPc2(sm.yield_actual)],
+    ['Rating',               `<span class="badge" style="background:${ratingColor}">${rPc2(sm.rating)}</span>`],
+    ['Upside',               `<b style="color:${sm.upside>=0?'#1f9d55':'#d64545'}">${rPc2(sm.upside)}</b>`],
     ['Canal sobrevalorado',  d2(sm.p_over)],
     ['Canal mediana',        d2(sm.p_mediana)],
     ['Canal infravalorado',  d2(sm.p_under)],
-    ['Div. Growth 3y',       rPc(sm.dg3)],
-    ['Div. Growth 5y',       rPc(sm.dg5)],
-    ['Div. Growth 10y',      rPc(sm.dg10)],
+    ['Div. Growth 3y',       rPc2(sm.dg3)],
+    ['Div. Growth 5y',       rPc2(sm.dg5)],
+    ['Div. Growth 10y',      rPc2(sm.dg10)],
     ['Mínimo 52W',           d2(sm.min52)],
     ['Máximo 52W',           d2(sm.max52)],
   ].map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('');
